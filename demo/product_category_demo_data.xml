@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="pro_electricity" model="product.category">
+            <field name="name">Electricity</field>
+        </record>
+
+        <record id="pro_gas" model="product.category">
+            <field name="name">Gas</field>
+        </record>
+
+        <record id="pro_telecoms" model="product.category">
+            <field name="name">Telecoms</field>
+        </record>
+
+        <record id="pro_water" model="product.category">
+            <field name="name">Water</field>
+        </record>
+
+        <record id="pro_broadband" model="product.category">
+            <field name="name">Broadband</field>
+        </record>
+
+        <record id="pro_domestic_elec" model="product.category">
+            <field name="name">Domestic Electricity</field>
+        </record>
+
+        <record id="pro_domestic_gas" model="product.category">
+            <field name="name">Domestic Gas</field>
+        </record>
+
+        <record id="pro_calls" model="product.category">
+            <field name="name">Calls</field>
+        </record>
+
+        <record id="pro_lines" model="product.category">
+            <field name="name">Lines</field>
+        </record>
+
+        <record id="pro_void" model="product.category">
+            <field name="name">Void</field>
+        </record>
+
+        <record id="pro_merchant_services" model="product.category">
+            <field name="name">Merchant Services</field>
+        </record>
+
+        <record id="pro_pdq" model="product.category">
+            <field name="name">PDQ</field>
+        </record>
+
+    </data>
+</odoo>

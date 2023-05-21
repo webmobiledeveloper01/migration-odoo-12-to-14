@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="meter_data_views_form" model="ir.ui.view">
+            <field name="name">Meter Data Line View Form</field>
+            <field name="model">meter.data.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="quote_button" string="Quote" type="object" class="btn-primary"
+                                context="{'default_meter_data_id': id}"/>
+                        <button name="update_rates_button" string="UpDate Rates" type="object"/>
+                    </header>
+                    <sheet>
+                        <group class="oe_button_box" name="button_box">
+                            <!--<button class="oe_inline oe_stat_button" type="object" icon="fa-outdent" name="action_view_contract" string="Sale/Contract"/>-->
+                                <!--<field name="contract_button" widget="statinfo" string="Contract"/>-->
+                        </group>
+                        <group>
+                            <group>
+                                <field name="electric_info_line_id"/>
+                                <field name="mpan_code"/>
+                                <!--<field name="main_meter"/>-->
+                            </group>
+                            <group>
+                                <field name="gas_info_line_id"/>
+                                <field name="mpr_code"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="contract_id" readonly="0" invisible="0"/>
+                                <!--context="{'form_view_ref': 'dernetz.sale_form_view'}"-->
+                                <field name="sale_name" readonly="1"/>
+                                <field name="clear_all"/>
+                                <field name="product_id"/>
+                                <field name="capacity"/>
+                                <field name="profile_id"/>
+                                <field name="check_sc"/>
+                                <field name="check_use_baserate"/>
+                                <field name="supplier_name"/>
+                                <field name="commission"/>
+                                <field name="serial_number"/>
+                                <field name="measurement_class"/>
+                                <field name="meter_read"/>
+                                <field name="meter_read_date"/>
+                                <field name="renew_check"/>
+                            </group>
+                            <group>
+                                <group colspan="4">
+                                    <field name="product_uom_qty"/>
+                                    <field name="region_id"/>
+                                    <field name="mtc_code"/>
+                                    <field name="uplift_value"/>
+                                    <field name="supplier"/>
+                                    <field name="utility_type"/>
+                                    <field name="co_boolean" invisible="1"/>
+                                    <field name="so_boolean" invisible="1"/>
+                                </group>
+
+                                <group string="Buy Rates">
+                                    <field name="standing_charge"/>
+                                    <field name="primary_rate"/>
+                                    <field name="secondary_rate"/>
+                                    <field name="tertiary_rate"/>
+                                    <field name="other_price_1"/>
+                                    <field name="other_price_2"/>
+                                    <field name="fit_rate"/>
+                                    <field name="kva_charge"/>
+                                </group>
+                                <group string="Sell Rates">
+                                    <field name="standing_charge_sell"/>
+                                    <field name="primary_rate_sell"/>
+                                    <field name="secondary_rate_sell"/>
+                                    <field name="tertiary_rate_sell"/>
+                                    <field name="other_price_1_sell"/>
+                                    <field name="other_price_2_sell"/>
+                                    <field name="fit_rate_sell" readonly="0"/>
+                                    <field name="kva_charge_sell"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="standing_charge_sell_dummy" invisible="1"/>
+                                <field name="primary_rate_sell_dummy" invisible="1"/>
+                                <field name="secondary_rate_sell_dummy" invisible="1"/>
+                                <field name="tertiary_rate_sell_dummy" invisible="1"/>
+                                <field name="other_price_1_sell_dummy" invisible="1"/>
+                                <field name="other_price_2_sell_dummy" invisible="1"/>
+                                <field name="fit_rate_sell_dummy" invisible="1"/>
+                                <!--<field name="contract_id" invisible="0"/>-->
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_meter_data_line_search_view" model="ir.ui.view">
+            <field name="name">Meter Data Line Search</field>
+            <field name="model">meter.data.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Meter Data Line">
+                    <field name="name"/>
+                    <field name="mpan_code"/>
+                    <!--<field name='partner_id' />-->
+                    <!--<field name="main_meter"/>-->
+                    <field name="product_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="region_id"/>
+                    <field name="profile_id"/>
+                    <field name="mtc_code"/>
+                    <field name="contract_id"/>
+                    <field name="sale_name"/>
+                    <!--<group expand="0" string="Group By">-->
+                    <!--<filter string="Contract" domain="[]" context="{'group_by' : 'contract_id'}" />-->
+                    <!--<filter string="Sale Order" context="{'group_by' : 'order_id'}" />-->
+                    <!--&lt;!&ndash;<filter string="partner" icon="terp-personal" domain="[]"&ndash;&gt;-->
+                    <!--&lt;!&ndash;context="{'group_by' : 'partner_id'}" />&ndash;&gt;-->
+                    <!--</group>-->
+                </search>
+            </field>
+        </record>
+
+        <record id="tree_meter_data" model="ir.ui.view">
+            <field name="name">Meter Data Tree</field>
+            <field name="model">meter.data.line</field>
+            <field name="arch" type="xml">
+                <tree string="Meter Data tree">
+                    <field name="mpan_code"/>
+                    <field name="ml_partner_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="commission"/>
+                    <field name="standing_charge_sell_dummy"/>
+                    <field name="primary_rate_sell_dummy"/>
+                    <field name="secondary_rate_sell_dummy"/>
+                    <field name="tertiary_rate_sell_dummy"/>
+                    <field name="other_price_1_sell_dummy"/>
+                    <field name="other_price_2_sell_dummy"/>
+                    <field name="fit_rate_sell_dummy"/>
+                    <field name="kva_charge"/>
+                    <field name="contract_id"/>
+                    <field name="sale_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="meter_data_action_view" model="ir.actions.act_window">
+            <field name="name">Meter Data Line</field>
+            <field name="res_model">meter.data.line</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="meter_data_main" name="Meter Data" action="meter_data_action_view"
+                  parent="menu_contract_main" sequence="2"/>
+
+
+    </data>
+</odoo>

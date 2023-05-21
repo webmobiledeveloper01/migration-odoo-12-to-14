@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_eon_contract_xls_open" model="ir.ui.view">
+            <field name="name">eon.list.contract.xls.form</field>
+            <field name="model">eon.list.contract.xls</field>
+            <field name="arch" type="xml">
+               <form string="Verbal Text">
+					<field name="partner_id" invisible="1"/>
+					<div>
+	                    <group string="Contracts">
+	                    	<field name="contract_line_ids" nolabel="1" domain="[('supplier_id','=',partner_id)]" />
+	                    </group>
+					</div>
+					<footer>
+						<button name="generate_eon_xls" type="object" class="oe_highlight" string="Generate XLS" />
+               			or
+                		<button string="Cancel" special="cancel"/>
+					</footer>
+                </form>
+            </field>
+        </record>
+
+
+		<act_window id="action_eon_contract_xls_open_act"
+            name="Export EON Contracts"
+            src_model="res.contract"
+            res_model="eon.list.contract.xls"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            groups="dernetz.group_contract_sys_admin,dernetz.group_contract_admin"/>
+
+
+<!--         <record id="action_eon_contract_xls_open" model="ir.actions.act_window"> -->
+<!--             <field name="name">EON Contracts Export</field> -->
+<!--             <field name="type">ir.actions.act_window</field> -->
+<!--             <field name="res_model">eon.list.contract.xls</field> -->
+<!--             <!-- <field name="view_type">form</field> --> -->
+<!--             <field name="view_mode">form</field> -->
+<!--             <field name="view_id" ref="view_eon_contract_xls_open"/> -->
+<!--             <field name="context">{}</field> -->
+<!--             <field name="target">new</field> -->
+<!--         </record> -->
+
+<!-- 		<menuitem id="menu_eon_contract_xls_open_base" name="Export EON Contracts" parent="menu_base_contract_config" -->
+<!-- 			sequence="250" groups="dernetz.group_contract_sys_admin,dernetz.group_contract_admin" /> -->
+
+<!-- 		<menuitem id="menu_eon_contract_xls_open_wizard" name="Export EON Contracts" parent="menu_base_contract_config" -->
+<!-- 			sequence="205" action="action_eon_contract_xls_open" /> -->
+
+
+    </data>
+</openerp>

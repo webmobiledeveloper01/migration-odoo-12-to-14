@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="docusign_template_sale_order_loa_name1" model="docusign.template">
+            <field name="name">LOA - Customer(Sale Order)</field>
+            <field name="email_from">${object.user_id.email or ''}</field>
+            <field name="subject">${object.company_id.name} (Ref ${object.name or 'n/a' })</field>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="auto_delete" eval="True"/>
+<!--            <field name="report_template" ref="report_loa_crm_contract"/>-->
+            <field name="report_name">LOA - ${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="signhere_tab">xxx</field>
+            <field name="signhere_tab_date">yyy</field>
+            <field name="xoff">0.30</field>
+            <field name="yoff">0.2</field>
+            <field name="xoff_date">0.30</field>
+            <field name="yoff_date">0.05</field>
+            <field name="body_html"><![CDATA[
+     			% for line in object.partner_id.child_ids:
+            		% if line.type == 'default':
+            			Dear ${line.name},
+            		% endif
+            	% endfor
+
+             ]]></field>
+        </record>
+
+        <!-- LOA Template for Contract -->
+
+        <record id="docusign_template_contract_loa_name1" model="docusign.template">
+            <field name="name">LOA - Customer(Contract)</field>
+            <field name="email_from">${object.user_id.email or ''}</field>
+            <field name="subject">${object.company_id.name} (Ref ${object.name or 'n/a' })</field>
+            <field name="email_recipients">${object.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="auto_delete" eval="True"/>
+<!--            <field name="report_template" ref="report_loa_crm_contract"/>-->
+            <field name="report_name">LOA - ${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="signhere_tab">xxx</field>
+            <field name="signhere_tab_date">yyy</field>
+            <field name="xoff">0.30</field>
+            <field name="yoff">0.2</field>
+            <field name="xoff_date">0.30</field>
+            <field name="yoff_date">0.05</field>
+            <field name="body_html"><![CDATA[
+     			% for line in object.partner_id.child_ids:
+            		% if line.type == 'default':
+            			Dear ${line.name},
+            		% endif
+            	% endfor
+
+             ]]></field>
+        </record>
+
+
+    </data>
+</odoo>

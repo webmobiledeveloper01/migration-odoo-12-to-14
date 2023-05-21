@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+        <!--Header Template -->
+
+        <template id="report_price_comparision_header_external_layout_header">
+            <div class="header">
+                <div class="row mt8">
+                    <div class="col-6" align="left">
+                        <img src="dernetz/static/src/img/Logo.png"
+                             style="height:130px;"/>
+                    </div>
+                    <div class="col-6 mt8" align="right" style="display:block;">
+                        <img src="dernetz/static/src/img/Address.png"
+                             style="height:100px;"/>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--Footer Template-->
+
+        <template id="report_price_comparision_footer_external_layout_header">
+            <div class="footer">
+                <div class="row" align="center" style="display:block;">
+                    <div class="col-12">
+                        <!-- <img src="dernetz/static/src/img/OtherInfo.png" height="28px"
+                             width="80%"/> -->
+                         <img src="dernetz/static/src/img/URLfooter.png" 
+                            style="width:110%;margin-left:-8%;" />
+                    </div>
+                    <!-- <div class="col-12">
+                        <div class="col-4">
+                            <img src="dernetz/static/src/img/Facebook.png" height="32px"
+                                 width="40%"/>
+                        </div>
+                        <div class="col-4">
+                            <img src="dernetz/static/src/img/Twitter.png" height="32px"
+                                 width="40%"/>
+                        </div>
+                        <div class="col-4">
+                            <img src="dernetz/static/src/img/LinkedIn.png" height="32px"
+                                 width="40%"/>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </template>
+
+        <!--Report Template ID external layout -->
+
+        <template id="report_price_comparision_external_layout">
+            <!--Price cmparision-->
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc"/>
+            </t>
+            <t t-if="o and 'company_id' in o">
+
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <t t-call="dernetz.report_price_comparision_header_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="dernetz.report_price_comparision_footer_external_layout_header"/>
+        </template>
+
+
+        <template id="report_price_comparision_pdfreport_document">
+            <t t-call="web.html_container">
+                <t t-call="dernetz.report_price_comparision_external_layout">
+                    <div class="page">
+
+                        <div class="row"
+                             style="color:#566D7E;font-size:24px;border-bottom:1px solid black;">
+                            <div class="col-5" align="left">
+                                <b>
+                                    <t t-foreach="o.meter_data_id.contract_id" t-as="contract">
+                                        <span t-esc="contract.name"/>
+                                    </t>
+                                </b>
+                            </div>
+                            <div class="col-5" align="right">
+                                <b>
+                                    <t t-foreach="o.meter_data_id.contract_id.partner_id" t-as="contract">
+                                        <span t-esc="contract.name"/>
+                                    </t>
+                                </b>
+                            </div>
+                        </div>
+                        <div class="row" style="color:#566D7E;font-size:18px;" align="center">
+                            <b>
+                                MPAN/MPR :-
+                                <span t-if="o.mpan_code" t-field="o.mpan_code"/>
+                                <span t-if="not o.mpan_code">&amp;nbsp;</span>
+                            </b>
+                        </div>
+
+                        <br/>
+                        <div class="row">
+                            <table class="table table-condensed table-bordered">
+                                <thead style="background-color:#6698FF;font-size:16px;text-align:center;">
+                                    <tr>
+                                        <td t-if="o.supplier_view_selec != 'none'" style="padding:15px;">Supplier</td>
+                                        <td style="padding:15px;">Term</td>
+                                        <!-- <td style="padding:20px;">PlanType</td> -->
+                                        <!--<td style="padding:20px;">UpliftValue</td>-->
+                                        <td style="padding:15px;">Standing<br/>Charge
+                                        </td>
+                                        <td style="padding:15px;">PrimaryRate</td>
+                                        <td style="padding:15px;">SecondaryRate</td>
+                                        <td style="padding:15px;">Eve/<br/>WERate</td>
+                                        <td style="padding:15px;">FITRate</td>
+                                        <td style="padding:15px;">Estimated AnnualPrice<br/>(Incl. CCL)
+                                        </td>
+                                        <td style="padding:15px;">QuarterlyCharge/<br/>SmartsMeter
+                                        </td>
+                                        <td style="padding:15px;">Rate Type</td>
+                                        <td style="padding:15px;">Payment</td>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size:15px;color:blue;">
+                                
+                                    <t t-set="selected_prices" t-value="o.selected_prices_with_suppliers(o.pricing_tool_ids)"/> 
+                                
+                                    <t t-foreach="selected_prices" t-as="price">
+                                        <t t-if="price.compare_price">
+                                            <tr style="text-align: center;">
+                                                <td t-if="o.supplier_view_selec != 'none'" style="padding:5px;">
+                                                    <img t-if="o.supplier_view_selec == 'img' or o.supplier_view_selec == 'both'" 
+                                                    t-att-src="'data:image/png;base64,%s'%price.supplier_img" style="max-height:45px;"/><br/>
+                                                    <t t-if="o.supplier_view_selec == 'ref' or o.supplier_view_selec == 'both'">
+                                                        <span t-esc="price.supplier_ref"/>
+                                                    </t>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.duration_term"/>
+                                                </td>
+                                                <!-- <td style="padding:20px;">
+                                                    <span t-esc="price.plan_type"/>
+                                                </td> -->
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.standing_charge"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.primary_rate"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.secondary_rate"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.tertiary_rate"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.fit_rate"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.annual_price_inclusive"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="price.extra_info"/>
+                                                </td>
+                                                <td style="padding:15px;">
+                                                    <span t-esc="o.meter_data_id.contract_id.contract_type_id.name"/>
+                                                </td>
+                                                <td style="padding:10px;">
+                                                    <span t-if="o.payment_method == 'dir_deb_mont'">
+                                                        Monthly Direct Debit
+                                                    </span>
+                                                    <span t-if="o.payment_method == 'dir_deb_quat'">
+                                                        Quarterly Direct Debit
+                                                    </span>
+                                                    <span t-if="o.payment_method == 'cash_cheq'">
+                                                        Cash Cheque
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_price_comparision">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dernetz.report_price_comparision_pdfreport_document"/>
+            </t>
+        </template>
+
+</openerp>

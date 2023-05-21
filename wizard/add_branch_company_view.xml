@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_add_existing_branch_company_wizard" model="ir.ui.view">
+            <field name="name">add.existing.branch.company.wizard</field>
+            <field name="model">add.branch.company</field>
+            <field name="arch" type="xml">
+               <form string="Add Existing Branch">
+               		<header>
+						<button special="cancel" string="Cancel"  icon="terp-gtk-stop"/>
+                        <button name="add_existing_brnach" string="Ok" type="object" />
+               		</header>
+                    <separator string="Re-parent Company to:"/>
+                    <group>
+	                    <field name="partner_id" string="Company" domain="[('is_company','=',True),('parent_id', '=', False)]"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+		<record id="action_add_branch_company" model="ir.actions.act_window">
+            <field name="name">Re-Parent</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">add.branch.company</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_add_existing_branch_company_wizard"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+<!--        <record model="ir.values" id="add_existing_branch_company_wizard">-->
+<!--            <field name="model_id" ref="base.model_res_partner" />-->
+<!--            <field name="name">Re-Parent</field>-->
+<!--            <field name="key2">client_action_multi</field>-->
+<!--            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_add_branch_company'))" />-->
+<!--            <field name="key">action</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--        </record>		-->
+
+    </data>
+</odoo>

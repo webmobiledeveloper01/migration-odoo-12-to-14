@@ -1,0 +1,1757 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!--Contract form view for sysadmin-->
+        <record id="contract_form_view" model="ir.ui.view">
+            <field name="name">Contract View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_contract_sys_admin')])]"/>
+            <field name="arch" type="xml">
+                <form string="Contract">
+                    <header>
+                        <button name="action_verbal" string="Verbal" type="object" icon="fa-star" class="oe_highlight"
+                                attrs="{'invisible': ['|',('via_verbal','!=',True),('state','!=','draft')]}"/>
+                        <button name="action_written" string="Written" type="object" icon="fa-star"
+                                class="oe_highlight"
+                                attrs="{'invisible': ['|',('via_written','!=',True),('state','!=','draft')]}"/>
+
+                        <button name="action_electronic" string="Electronic" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_electronic','!=',True),('state','!=','draft')]}"
+                                class="oe_highlight"/>
+                        <button name="action_sale_confirmed" type="object" string="Sale Confimed" class="oe_highlight"
+                                icon="fa-star" states="draft"/>
+                        <button name="act_confirmed" string="Admin Confirmed" type="object" icon="fa-star"
+                                states="sale_agreed" class="oe_highlight"/>
+                        <button name="act_accepted" string="Accepted" type="object" icon="fa-star"
+                                states="confirmed" class="oe_highlight"/>
+                        <button name="action_live" string="Live" type="object" icon="fa-star"
+                                states="accepted" class="oe_highlight"/>
+                        <button name="act_complete" string="Completed" type="object" icon="fa-star"
+                                states="live" class="oe_highlight"/>
+                        <button name="action_livenocis_scanned" type="object" string="LiveNOCIS Scanned"
+                                states="complete" class="oe_highlight"/>
+                        <button name="action_payment_confirmed" type="object" string="Payment Confirm" icon="fa-star"
+                                states="livenocis_scanned" class="oe_highlight"/>
+                        <button name="action_contract_query" string="Sales Query" type="object" icon="fa-star"
+                                states="draft,sale_agreed,confirmed,accepted,admin_query" class="oe_highlight"/>
+                        <button name="action_admin_query" string="Return Query" type="object" icon="fa-star"
+                                states="query" class="oe_highlight"/>
+                        <button name="action_cot_cancel" string="COT Cancelled" type="object" icon="fa-star"
+                                class="oe_highlight"
+                                confirm="Are you sure ?"/>
+                        <button name="action_cancel" string="Cancel" icon="fa-star" confirm="Are you sure ?"
+                                states="draft,doc_pending,sale_agreed,confirmed,accepted,complete,livenocis_scanned,payment_confirmed,admin_query,query,cot_cancelled"
+                                type="object" class="oe_highlight"/>
+                        <button name="action_reset_to_draft" string="Reset to draft" type="object" icon="fa-star"
+                                states="cancelled,cot_cancelled,doc_pending,docusign_pending" class="oe_highlight"/>
+                        <!--<button name="action_cancel_draft" string="Rest To Draft" type="object" class="btn-primary" states="cancel"/>-->
+                        <button name="action_return_to_prev_state" type="object"
+                                states="admin_query" string="Return To Previous State"
+                                icon="fa-star" class="oe_highlight"/>
+                        <!--groups="dernetz.group_res_contract_sales_query_handler"-->
+                        <button name="action_renew_contract"
+                                type="object" class="oe_highlight"
+                                string="Renew Contract"
+                                attrs="{'invisible': ['|',('state','not in',('complete','payment_confirmed','livenocis_scanned')), ('superseded','=',True), ('check_renew','=',True)]}"/>
+                        <button name="action_send_docusign_doc" string="Send DocuSign Documents" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_send_doc_email" string="Doc Send" type="object" invisible="1"/>
+                        <button name="action_udicore_docusign" string="UDICore Docusign" type="object"
+                                class="oe_highlight"/>
+                    </header>
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,doc_pending,docusign_pending,sale_agreed,confirmed,accepted,live,complete,livenocis_scanned,payment_confirmed,query,admin_query,cot_cancelled,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group style="text-align:left;float:left; margin:0px">
+                            <group style="margin:0px">
+                                <group style="margin:0px">
+                                    <group class="oe_button_box" name="button_box" style="text-align:left;float:left;">
+                                        <!--<button class="oe_stat_button" type="action" icon="fa-outdent"-->
+                                                <!--name="get_all_notes_from_customer">-->
+                                            <!--<field name="note_button" widget="statinfo" string="NOTE!!"/>-->
+                                        <!--</button>-->
+                                        <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                                name="action_view_meter_data">
+                                            <field name="meter_data" widget="statinfo" string="METER DATA!!"/>
+                                        </button>
+                                    </group>
+                                </group>
+                            </group>
+                            <group style="text-align:right;float:right; margin:0px">
+                                <div style="font-size:26px;font-weight:bold;color:#7C7BAD;">
+                                    <label for="docusign_received" string="Docusign"
+                                           style="font-size:26px;font-weight:bold;color:#7C7BAD;"/>
+                                    <field name="docusign_received" />
+                                </div>
+                                <group style="margin:0px">
+                                    <group style="margin:0px;text-align:right;float:right;">
+                                        <!--<group style="text-align:right;float:right;">-->
+                                        <!--<label for="superseded" string="Superseded:" style="font-size:20px;"/>-->
+                                    <div style="font-weight:bold;color:#7C7BAD;">
+                                        <label for="docusign_sent_datetime" string="SENT"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_sent_datetime" class="oe_inline"/>
+                                        <label for="docusign_received_datetime" string="RECEIVED"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_received_datetime" class="oe_inline"/>
+
+                                    </div>
+                                    </group>
+                                    <group>
+                                        <field name="superseded"/>
+                                        <!--<label for="days_to_expiry" string="Day To Expiry:" style="font-size:20px;"/>-->
+                                        <field name="days_to_expiry"/>
+                                        <field name="days_to_loa_expiry"/>
+                                        <!--</group>-->
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="contract_name" string="Contract:" style="font-size:20px;"/>
+                                <field name="contract_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <group colspan="4">
+                                    <field name="partner_id" required="1"/>
+                                    <field name="des_partner_id" domain="[('parent_id', '=', partner_id)]"
+                                           attrs="{'readonly': [('state','in',('complete','confirmed', 'payment_confirmed', 'livenocis_scanned'))]}"/>
+                                    <field name="address_id" domain="[('parent_id','=',partner_id)]"/>
+                                    <field name="supplier_id"/>
+                                    <field name="supplier_for_docusign"/>
+                                    <field name="supplier_ref"/>
+                                    <field name="loa_lead_time"/>
+                                    <field name="use_parent_address"/>
+                                    <label for="street" string="Address"/>
+                                    <div>
+                                        <div class="o_address_format">
+                                            <field name="street" placeholder="Street..." class="o_address_street"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                            <field name="city" placeholder="City" class="o_address_city"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State"/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                            <field name="country_id" placeholder="Country" class="o_address_country"
+                                                   options='{"no_open": True, "no_create": True}'
+                                                   domain="[('code','=','GB')]"/>
+                                        </div>
+                                    </div>
+                                    <field name="last_state" invisible="1" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="rec_name" readonly="1"/>
+                                        <field name="sale_name" readonly="1"/>
+                                        <field name="sale_order_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_sysadmin'}"/>
+                                        <field name="renew_so_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_sysadmin'}"/>
+                                        <field name="order_type" readonly="1"/>
+                                        <field name="so_boolean" readonly="1"/>
+                                        <field name="co_boolean" readonly="1"/>
+                                        <!--                                        <field name="sale_order_id"/>-->
+                                        <!--                                        <field name="sale_order_line_id"/>-->
+                                        <field name="meter_data_id" readonly="1"/>
+                                        <field name="mpan_code" readonly="1"/>
+                                        <field name="mpan_code" invisible="1"/>
+                                        <field name="start_date"/>
+                                        <field name="commission_date"/>
+                                        <field name="livenocis"/>
+                                        <field name="payment_confirmed_date"/>
+                                        <field name="year_duration"/>
+                                        <field name="end_date"/>
+                                        <field name="confirmation_date"/>
+                                    </group>
+                                    <group colspan="4">
+
+                                        <field name="date_admin_confirm"/>
+                                        <field name="loa_expiry"/>
+                                        <field name="cot_date"/>
+                                        <field name="cancelled_date"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="categ_id" widget="selection"/>
+                                        <field name="usage"/>
+                                        <field name="proof_of_usage"/>
+                                        <field name="pricing_type"/>
+                                    </group>
+                                    <group colspan="4">
+                                        <field name="uplift_value"/>
+                                        <field name="broker_uplift"/>
+                                        <field name="supplier_uplift"/>
+                                        <field name="edit_internal_commission"/>
+                                        <field name="edit_broker_commission"/>
+                                        <field name="broker_commission" readonly="1"/>
+                                        <field name="ad_hoc_commission"/>
+                                        <field name="external_broker_commission" readonly="1"/>
+                                        <field name="supplier_commission"/>
+                                        <field name="usage_type_ration" readonly="1"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group string="Base Info">
+                                <group>
+                                    <field name="sse_billing_period"/>
+                                    <field name="utility_type" readonly="1"/>
+                                    <field name="contract_account_id"/>
+                                    <field name="previous_supplier_id"/>
+                                    <field name="previous_contract_end_date"/>
+                                    <field name="contract_type_id"/>
+                                    <field name="contract_subtype_id"/>
+                                    <field name="payment_type_id"/>
+                                    <field name="query_code_id"
+                                           invisible="1"/>
+                                    <field name="dd_collection_date"/>
+                                </group>
+                                <group>
+                                    <field name="utility_type_elec_docusign"
+                                           attrs="{'invisible': [('utility_type_gas_docusign','=',True)]}"/>
+                                    <field name="utility_type_gas_docusign"
+                                           attrs="{'invisible': [('utility_type_elec_docusign','=',True)]}"/>
+                                    <field name="debt_with_current_supplier"/>
+                                    <field name="verbal_text_id"/>
+                                    <field name="written_template_id"/>
+                                    <field name="electronic_template_id"/>
+                                    <field name="meter_surcharge"/>
+
+                                </group>
+                                <group string="Sales Confirmation">
+                                    <field name="sale_confirmed_letter_sent"/>
+                                    <field name="sale_confirmed_date"/>
+                                    <field name="welcome_letter_sent"/>
+                                    <field name="welcome_letter_date"/>
+                                    <field name="via_verbal"/>
+                                    <field name="via_written"/>
+
+                                </group>
+
+                                <group string="Billing">
+                                    <field name="via_electronic"/>
+                                    <field name="smart_meter"/>
+                                    <field name="bei"/>
+                                    <field name="ebilling"/>
+                                    <field name="renew_check"
+                                           invisible="1"/>
+                                    <field name="acquisition_bool"
+                                           invisible="1"/>
+                                    <field name="check_renew"
+                                           invisible="1"/>
+                                    <field name="presale_termination_issued"/>
+                                    <field name="date_terminate_psti"
+                                           attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+                                </group>
+                                <label for="supplier_acceptance_code_psti" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+                                <field name="supplier_acceptance_code_psti"
+                                       attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+
+                            </group>
+                            <group string="Sales Info">
+                                <group colspan="4">
+                                    <field name="renew_id" readonly="1"/>
+                                    <field name="company_id"/>
+                                    <field name="user_id"/>
+                                    <field name="default_section_id"/>
+                                    <field name="previous_user_id"/>
+                                    <field name="admin_user_id"/>
+                                    <field name="admin_pro_user_id"/>
+                                    <field name="sale_query_agent"/>
+                                    <field name="sale_query_level"/>
+                                    <field name="agent_id"/>
+                                </group>
+                                <group>
+                                    <field name="confirmation_medium"/>
+                                    <field name="contract_terminated"/>
+                                    <field name="date_terminate"
+                                           attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                                    <field name="contract_audited"/>
+                                    <field name="date_audit"/>
+                                    <field name="paid_annually"/>
+                                </group>
+                                <group>
+                                    <field name="service_id"/>
+                                    <field name="split_contract"/>
+                                    <field name="water_export"/>
+                                    <field name="water_export_date"/>
+                                    <field name="poor_credit"/>
+                                    <field name="clean_user_id"/>
+                                    <field name="clean_datetime"/>
+                                </group>
+                                <label for="supplier_acceptance_code" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                                <field name="supplier_acceptance_code"
+                                       attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                            </group>
+                            <group string="Our Export Details">
+                                <field name="export_flag"/>
+                                <field name="export_date"/>
+                                <field name="export_flag_2"/>
+                                <field name="export_date_2"/>
+                                <field name="lost"/>
+                            </group>
+                            <group string="Customer Export Details">
+                                <field name="export_flag_3"/>
+                                <field name="export_date_3"/>
+                                <field name="export_flag_4"/>
+                                <field name="export_date_4"/>
+                                <field name="cot_ref"/>
+                                <field name="attach_to_con"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Note">
+                                <field name="general_note_contract_ids">
+                                    <tree string="General Note">
+                                        <field name="log_date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                        <field name="contract_id"/>
+                                    </tree>
+                                    <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                        <group colspan="4">
+                                            <field name="name"/>
+                                        </group>
+                                    </form>
+
+                                </field>
+                            </page>
+                            <page string="Admin Note">
+                                <!--<group string="Admin Team Notes">-->
+                                <separator string="Admin Team Notes" style="color:red;"/>
+                                <field name="note_admin_ids">
+                                    <tree editable="top">
+                                        <field name="date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Sales Note">
+                                <!--</group>-->
+                                <!--<group string="Sales Team Notes">-->
+                                <separator string="Sales Team Notes" style="color:red;"/>
+                                <field name="note_sales_ids">
+                                    <tree string="Sales Note Line" editable="top">
+                                        <field name="date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                                <!--</group>-->
+                            </page>
+                            <page string="History">
+                                <separator string="History"/>
+                                <field name="contract_send_mail_history_line_ids" readonly="1">
+                                    <tree >
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                        <field name="write_uid"/>
+                                        <field name="state_from"/>
+                                        <field name="state_to"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Internal Commission">
+                                <!--<group>-->
+                                <group>
+                                    <button name="action_update_commission_data" string="Update Commission"
+                                            class="oe_highlight" type="object"/>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="check_accuracy"/>
+                                        <field name="commission_payment_quant"/>
+                                        <field name="commission_paid_bool"/>
+                                        <field name="date_finalised"/>
+                                        <field name="month_paid"/>
+                                        <field name="commission_first_payment"/>
+                                    </group>
+                                    <group>
+                                        <field name="commi_year_id"/>
+                                        <field name="commission_percentage"/>
+                                        <field name="calculate_broker_commission"/>
+                                    </group>
+                                    <!--<group>-->
+                                        <!--<field name="commission_percentage"/>-->
+                                        <!--<field name="calculate_broker_commission"/>-->
+                                    <!--</group>-->
+                                </group>
+                                <!--</group>-->
+                                <!--</group>-->
+                                <separator string="Commission Payments/Adjustments" style="color:red;"/>
+                                <field name="broker_reconcile_ids">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission"/>
+                                        <field name="user_id"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="comm_amount"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="full_commission"/>
+                                        <field name="brokercommission_amount_total"/>
+                                        <field name="commission_to_pay"/>
+                                    </group>
+                                </div>
+                            </page>
+                            <page string="External Commission">
+                                <group>
+                                    <button name="action_update_broker_commission_data" class="oe_highlight"
+                                            string="Update Broker Commission"
+                                            type="object"/>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="broker_accuracy_checked"/>
+                                        <field name="broker_commission_paid_bool"/>
+                                        <field name="broker_commission_payment_quant"/>
+                                        <field name="broker_date_finalised"/>
+                                        <field name="broker_commission_first_payment"/>
+                                    </group>
+                                    <group>
+                                        <field name="broker_commi_year_id"/>
+                                        <field name="broker_commission_percentage"/>
+                                        <field name="calculate_external_broker_commission"/>
+                                    </group>
+                                </group>
+                                <separator string="Commission Payments/Adjustments" style="color:red;"/>
+                                <field name="external_broker_reconcile_ids" context="{'default_is_external_broker':True}">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission"/>
+                                        <field name="user_id"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="comm_amount"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="is_external_broker" invisible="0"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="external_full_commission"/>
+                                        <field name="ext_brokercommission_amount_total"/>
+                                        <field name="ext_commission_to_pay"/>
+                                    </group>
+                                </div>
+                            </page>
+                            <page string="Supplier Reconciliation">
+                                <group>
+                                    <!--<field name="paid_annually"/>-->
+                                </group>
+                                <separator string="Supplier Reconciliation"/>
+                                <field name="commission_reconcile_ids">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission" required="1"/>
+                                        <field name="user_id" required="1"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="consumption"/>
+                                        <field name="com_amount"/>
+                                        <field name="com_deducted_amount"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="total_amount_paid"/>
+                                    </group>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!--<field name="activity_ids" widget="mail_activity"/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+
+        </record>
+
+        <!--ADMIN/PAYMENT ADMIN-->
+        <record id="contract_form_view_admin_pay_admin" model="ir.ui.view">
+            <field name="name">Contract View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_res_contract_payment_admin'), ref('dernetz.group_contract_admin')])]"/>
+            <field name="arch" type="xml">
+                <form string="Contract">
+                    <header>
+                        <button name="action_verbal" string="Verbal" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_verbal','!=',True),('state','!=','draft')]}"
+                                groups="dernetz.group_contract_admin,dernetz.group_contract_salesteam"/>
+                        <!--attrs="{'invisible': ['|',('via_verbal','!=',True),('state','!=','draft')]}"-->
+                        <button name="action_written" string="Written" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_written','!=',True),('state','!=','draft')]}"/>
+                        <!--attrs="{'invisible': ['|',('via_written','!=',True),('state','!=','draft')]}"-->
+                        <button name="action_electronic" string="Electronic" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_electronic','!=',True),('state','!=','draft')]}"
+                                groups="dernetz.group_contract_admin,dernetz.group_contract_salesteam,dernetz.group_contract_salesteam_all,dernetz.group_contract_salesteam_all_readonly_user"/>
+                        <button name="action_sale_confirmed" type="object" string="Sale Confimed" class="oe_highlight"
+                                icon="fa-star" states="draft"/>
+                        <button name="act_confirmed" string="Admin Confirmed" type="object" icon="fa-star"
+                                states="sale_agreed" groups="dernetz.group_contract_admin"/>
+                        <button name="act_accepted" string="Accepted" type="object" icon="fa-star"
+                                states="confirmed" groups="dernetz.group_contract_admin"/>
+                        <button name="action_live" string="Live" type="object" icon="fa-star"
+                                states="accepted" groups="dernetz.group_contract_admin"/>
+                        <button name="act_complete" string="Completed" type="object" icon="fa-star"
+                                states="live"
+                                groups="dernetz.group_contract_admin,dernetz.group_res_contract_payment_admin,dernetz.group_contract_sys_admin"/>
+                        <button name="action_livenocis_scanned" type="object" string="LiveNOCIS Scanned"
+                                states="complete"
+                                groups="dernetz.group_contract_admin,dernetz.group_res_contract_payment_admin,dernetz.group_contract_sys_admin"/>
+                        <button name="action_payment_confirmed" type="object" string="Payment Confirm" icon="fa-star"
+                                states="livenocis_scanned"
+                                groups="dernetz.group_contract_admin,dernetz.group_res_contract_payment_admin,dernetz.group_contract_sys_admin"/>
+                        <button name="action_contract_query" string="Sales Query" type="object" icon="fa-star"
+                                states="draft,sale_agreed,confirmed,accepted,admin_query"
+                                groups="dernetz.group_res_contract_payment_admin,dernetz.group_contract_admin"/>
+                        <button name="action_admin_query" string="Return Query" type="object" icon="fa-star"
+                                states="query" class="oe_highlight"/>
+                        <button name="action_cot_cancel" string="COT Cancelled" type="object" icon="fa-star"
+                                groups="dernetz.group_res_contract_payment_admin"
+                                confirm="Are you sure ?"/>
+                        <button name="action_cancel" string="Cancel" icon="fa-star" confirm="Are you sure ?"
+                                states="draft,doc_pending,sale_agreed,confirmed,accepted,complete,livenocis_scanned,payment_confirmed,admin_query,query,cot_cancelled"
+                                type="object"/>
+                        <button name="action_reset_to_draft" string="Reset to draft" type="object" icon="fa-star"
+                                states="cancelled,cot_cancelled,doc_pending,docusign_pending"
+                                groups="dernetz.group_contract_admin"/>
+                        <!--<button name="action_cancel_draft" string="Rest To Draft" type="object" class="btn-primary" states="cancel"/>-->
+                        <button name="action_return_to_prev_state" type="object"
+                                states="admin_query" string="Return To Previous State"
+                                icon="fa-star" groups="dernetz.group_contract_admin"/>
+                        <!--groups="dernetz.group_res_contract_sales_query_handler"-->
+                        <button name="action_renew_contract"
+                                type="object" class="oe_highlight"
+                                string="Renew Contract"
+                                attrs="{'invisible': ['|',('state','not in',('complete','payment_confirmed','livenocis_scanned')), ('superseded','=',True), ('check_renew','=',True)]}"
+                                groups="dernetz.group_contract_admin,dernetz.group_contract_salesteam,dernetz.group_contract_salesteam_all,dernetz.group_contract_salesteam_all_readonly_user,dernetz.group_contract_sys_admin"/>
+                        <button name="action_send_docusign_doc" string="Send DocuSign Documents" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_udicore_docusign" string="UDICore Docusign" type="object"
+                                class="oe_highlight"/>
+                    </header>
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,doc_pending,docusign_pending,sale_agreed,confirmed,accepted,live,complete,livenocis_scanned,payment_confirmed,query,admin_query,cot_cancelled,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group style="text-align:left;float:left; margin:0px">
+                            <group style="margin:0px">
+                                <group style="margin:0px">
+                                    <group class="oe_button_box" name="button_box" style="text-align:left;float:left;">
+                                        <!--<button class="oe_stat_button" type="action" icon="fa-outdent"-->
+                                                <!--name="get_all_notes_from_customer">-->
+                                            <!--<field name="note_button" widget="statinfo" string="NOTE!!"/>-->
+                                        <!--</button>-->
+                                        <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                                name="action_view_meter_data">
+                                            <field name="meter_data" widget="statinfo" string="METER DATA!!"/>
+                                        </button>
+                                    </group>
+                                </group>
+                            </group>
+                            <group style="text-align:right;float:right; margin:0px">
+                                <div style="font-size:26px;font-weight:bold;color:#7C7BAD;">
+                                    <label for="docusign_received" string="Docusign"
+                                           style="font-size:26px;font-weight:bold;color:#7C7BAD;"/>
+                                    <field name="docusign_received" />
+                                </div>
+                                <group style="margin:0px">
+                                    <group style="margin:0px;text-align:right;float:right;">
+                                        <!--<group style="text-align:right;float:right;">-->
+                                        <!--<label for="superseded" string="Superseded:" style="font-size:20px;"/>-->
+                                    <div style="font-weight:bold;color:#7C7BAD;">
+                                        <label for="docusign_sent_datetime" string="SENT"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_sent_datetime" class="oe_inline"/>
+                                        <label for="docusign_received_datetime" string="RECEIVED"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_received_datetime" class="oe_inline"/>
+
+                                    </div>
+                                    </group>
+                                    <group>
+                                        <field name="superseded"/>
+                                        <!--<label for="days_to_expiry" string="Day To Expiry:" style="font-size:20px;"/>-->
+                                        <field name="days_to_expiry"/>
+                                        <field name="days_to_loa_expiry"/>
+                                        <!--</group>-->
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="contract_name" string="Contract:" style="font-size:20px;"/>
+                                <field name="contract_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <group colspan="4">
+                                    <field name="partner_id" required="1"
+                                           attrs="{'readonly': [('state','in',('complete','confirmed', 'payment_confirmed'))]}"/>
+                                    <field name="des_partner_id" domain="[('parent_id', '=', partner_id)]"
+                                           attrs="{'readonly': [('state','in',('complete','confirmed', 'payment_confirmed', 'livenocis_scanned'))]}"/>
+                                    <field name="address_id" domain="[('parent_id','=',partner_id)]"/>
+                                    <field name="supplier_id" required="1"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"
+                                           widget="selection"/>
+                                    <field name="supplier_for_docusign"/>
+                                    <field name="supplier_ref"
+                                           attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed', 'sale_agreed'])]}"/>
+                                    <field name="loa_lead_time"/>
+                                    <field name="use_parent_address"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                    <label for="street" string="Address"/>
+                                    <div>
+                                        <div class="o_address_format">
+                                            <field name="street" placeholder="Street..." class="o_address_street"
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                            <field name="city" placeholder="City" class="o_address_city"
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State"
+                                                   options='{"no_open": True}'
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"
+                                                   domain="[('country_id.code','=','GB')]"/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip"
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                            <field name="country_id" placeholder="Country" class="o_address_country"
+                                                   options='{"no_open": True, "no_create": True}'
+                                                   domain="[('code','=','GB')]"
+                                                   attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                        </div>
+                                    </div>
+                                    <field name="last_state" invisible="1" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="rec_name" readonly="1"/>
+                                        <field name="sale_name" readonly="1"/>
+                                        <field name="sale_order_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_admin_pay_admin'}"/>
+                                        <field name="renew_so_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_admin_pay_admin'}"/>
+                                        <field name="order_type" readonly="1"/>
+                                        <field name="so_boolean" readonly="1"/>
+                                        <field name="co_boolean" readonly="1"/>
+                                        <!--                                        <field name="sale_order_id"/>-->
+                                        <!--                                        <field name="sale_order_line_id"/>-->
+                                        <field name="meter_data_id" readonly="1"/>
+                                        <field name="start_date"/>
+                                        <field name="commission_date" readonly="1"/>
+                                        <field name="livenocis" readonly="1"/>
+                                        <field name="payment_confirmed_date" readonly="1"/>
+                                        <field name="year_duration"
+                                               attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                        <field name="end_date"/>
+                                        <field name="confirmation_date" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    </group>
+                                    <group colspan="4">
+
+                                        <field name="date_admin_confirm" readonly="1"/>
+                                        <field name="loa_expiry"/>
+                                        <field name="cot_date"
+                                               attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed', 'query','admin_query', 'complete'])]}"/>
+                                        <field name="cancelled_date" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="categ_id"
+                                               attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"
+                                               widget="selection"/>
+                                        <field name="usage" readonly="1"/>
+                                        <field name="proof_of_usage"
+                                               attrs="{'readonly': [('state','not in',('draft','sale_agreed','confirmed','accepted'))]}"/>
+                                        <field name="pricing_type"
+                                               attrs="{'readonly': [('state','not in',('draft','sale_agreed','confirmed'))]}"/>
+                                    </group>
+                                    <group colspan="4">
+                                        <field name="uplift_value"
+                                               attrs="{'readonly': [('state', 'not in', ['draft','sale_agreed','confirmed','query','admin_query'])]}"/>
+                                        <field name="broker_uplift"
+                                               attrs="{'readonly': [('state','in',('complete','payment_confirmed','cancelled'))]}"/>
+                                        <field name="supplier_uplift"
+                                               attrs="{'readonly': [('state','in',('complete','payment_confirmed','cancelled'))]}"/>
+                                        <field name="edit_internal_commission"/>
+                                        <field name="edit_broker_commission"/>
+                                        <field name="broker_commission" readonly="1"/>
+                                        <field name="ad_hoc_commission" readonly="1"/>
+                                        <field name="external_broker_commission" readonly="1"/>
+                                        <field name="supplier_commission"/>
+                                        <field name="usage_type_ration"
+                                               attrs="{'readonly': [('state','in',('complete','payment_confirmed','cancelled'))]}"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group string="Base Info">
+                                <group>
+                                    <field name="sse_billing_period"/>
+                                    <field name="utility_type" readonly="1"/>
+                                    <field name="contract_account_id" attrs="{'readonly': [('renew_check','=',True)]}"
+                                           widget="selection"/>
+                                    <field name="previous_supplier_id"
+                                           attrs="{'required': [('acquisition_bool','=',True)],'invisible': [('acquisition_bool','!=',True)]}"/>
+                                    <field name="previous_contract_end_date"/>
+                                    <field name="contract_type_id"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed'))]}"
+                                           widget="selection"/>
+                                    <field name="contract_subtype_id" widget="selection"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed'))]}"/>
+                                    <field name="payment_type_bool"
+                                           invisible="1"/>
+                                    <field name="query_code_id"
+                                           invisible="1"/>
+                                    <field name="payment_type_id"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"
+                                           widget="selection"
+                                           options="{'create':false,'create_edit':false}"/>
+                                    <field name="dd_collection_date"
+                                           attrs="{'invisible': [('payment_type_bool','!=',True)],'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                </group>
+                                <group>
+                                    <field name="utility_type_elec_docusign"
+                                           attrs="{'invisible': [('utility_type_gas_docusign','=',True)]}"/>
+                                    <field name="utility_type_gas_docusign"
+                                           attrs="{'invisible': [('utility_type_elec_docusign','=',True)]}"/>
+                                    <field name="debt_with_current_supplier"/>
+                                    <field name="verbal_text_id"
+                                           attrs="{'invisible': [('via_verbal','!=',True)],'required': [('via_verbal','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="written_template_id"
+                                           attrs="{'invisible': [('via_written','!=',True)],'required': [('via_written','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="electronic_template_id"
+                                           attrs="{'invisible': [('via_electronic','!=',True)],'required': [('via_electronic','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="meter_surcharge"/>
+
+                                </group>
+                                <group string="Sales Confirmation">
+                                    <field name="sale_confirmed_letter_sent"/>
+                                    <field name="sale_confirmed_date"/>
+                                    <field name="welcome_letter_sent"/>
+                                    <field name="welcome_letter_date"/>
+                                    <field name="via_verbal" readonly="1"/>
+                                    <field name="via_written" readonly="1"/>
+
+                                </group>
+
+                                <group string="Billing">
+                                    <field name="via_electronic"/>
+                                    <field name="smart_meter"
+                                           attrs="{'readonly': [('state', 'not in', ['draft','sale_agreed','confirmed'])]}"/>
+                                    <field name="bei"
+                                           attrs="{'readonly': [('state', 'not in', ['draft','sale_agreed','confirmed'])]}"/>
+                                    <field name="ebilling"
+                                           attrs="{'readonly': [('state', 'not in', ['draft','sale_agreed','confirmed'])]}"/>
+                                    <field name="renew_check"
+                                           invisible="1"/>
+                                    <field name="acquisition_bool"
+                                           invisible="1"/>
+                                    <field name="check_renew"
+                                           invisible="1"/>
+                                    <field name="presale_termination_issued"/>
+                                    <field name="date_terminate_psti"
+                                           groups="dernetz.group_contract_admin"
+                                           attrs="{'invisible': [('presale_termination_issued','!=',True)],'required': [('presale_termination_issued','!=',False)]}"/>
+                                </group>
+                                <label for="supplier_acceptance_code_psti" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+                                <field name="supplier_acceptance_code_psti"
+                                       attrs="{'invisible': [('presale_termination_issued','!=',True)],'required': [('presale_termination_issued','!=',False)]}"
+                                />
+
+                            </group>
+                            <group string="Sales Info">
+                                <group colspan="4">
+                                    <field name="renew_id" readonly="1"/>
+                                    <field name="company_id"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                    <field name="user_id"/>
+                                    <field name="default_section_id"/>
+                                    <filed name="previous_user_id"/>
+                                    <field name="admin_user_id"
+                                           groups="base.group_system,dernetz.group_contract_admin,dernetz.group_contract_salesteam,dernetz.group_contract_salesteam_all,dernetz.group_contract_salesteam_all_readonly_user"
+                                           attrs="{'readonly': [('state','!=','confirmed')]}"/>
+                                    <field name="admin_pro_user_id"
+                                           attrs="{'readonly': [('state','in',['payment_confirmed','cancelled'])]}"/>
+                                    <field name="sale_query_agent" options="{'no_create_edit': True}"/>
+                                    <field name="sale_query_level"/>
+                                    <field name="agent_id" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="confirmation_medium"
+                                           attrs="{'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                    <field name="contract_terminated"/>
+                                    <field name="date_terminate"
+                                           attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                                    <field name="contract_audited"/>
+                                    <field name="date_audit"/>
+                                    <field name="paid_annually"/>
+                                </group>
+                                <group>
+                                    <field name="service_id"
+                                           attrs="{'invisible': [('utility_type','=','ele')],'readonly': [('state','in',('complete','payment_confirmed','confirmed'))]}"/>
+                                    <field name="split_contract"/>
+                                    <field name="water_export"/>
+                                    <field name="water_export_date"/>
+                                    <field name="poor_credit"/>
+                                    <field name="clean_user_id"/>
+                                    <field name="clean_datetime"/>
+                                </group>
+                                <label for="supplier_acceptance_code" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                                <field name="supplier_acceptance_code"
+                                       attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                            </group>
+                            <group string="Our Export Details">
+                                <field name="export_flag"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_date"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_flag_2"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live', 'complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_date_2"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="lost" groups="dernetz.group_contract_sys_admin"/>
+                            </group>
+                            <group string="Customer Export Details">
+                                <field name="export_flag_3"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_date_3"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_flag_4"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="export_date_4"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       attrs="{'readonly': [('state','not in',('sale_agreed','confirmed','accepted','live','complete','livenocis_scanned','payment_confirmed','query','admin_query','cot_cancelled','cancelled'))]}"/>
+                                <field name="cot_ref" attrs="{'readonly': [('state', '!=', 'cot_cancelled')]}"
+                                       groups="dernetz.group_contract_sys_admin"/>
+                                <field name="attach_to_con"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Note">
+                                <field name="general_note_contract_ids">
+                                    <tree string="General Note">
+                                        <field name="log_date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                        <field name="contract_id"/>
+                                    </tree>
+                                    <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                        <group colspan="4">
+                                            <field name="name"/>
+                                        </group>
+                                    </form>
+
+                                </field>
+                            </page>
+                            <page string="Admin Note" groups="dernetz.group_contract_admin">
+                                <!--<group string="Admin Team Notes">-->
+                                <separator string="Admin Team Notes" style="color:red;"/>
+                                <field name="note_admin_ids">
+                                    <tree editable="top">
+                                        <field name="date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Sales Note">
+                                <!--</group>-->
+                                <!--<group string="Sales Team Notes">-->
+                                <separator string="Sales Team Notes" style="color:red;"/>
+                                <field name="note_sales_ids">
+                                    <tree string="Sales Note Line" editable="top">
+                                        <field name="date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                                <!--</group>-->
+                            </page>
+                            <page string="History">
+                                <separator string="History"/>
+                                <field name="contract_send_mail_history_line_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                        <field name="write_uid"/>
+                                        <field name="state_from"/>
+                                        <field name="state_to"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Internal Commission"
+                                  groups="dernetz.group_res_contract_payment_admin">
+                                <group>
+                                    <button name="action_update_commission_data" string="Update Commission"
+                                            class="oe_highlight" type="object"/>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="check_accuracy"/>
+                                        <field name="commission_payment_quant"/>
+                                        <field name="commission_paid_bool"
+                                               attrs="{'readonly':[('commission_paid_bool','=',True)]}"/>>
+                                        <field name="date_finalised"
+                                               attrs="{'readonly':[('commission_paid_bool','=',True)]}"/>
+                                        <field name="month_paid"
+                                               attrs="{'readonly':[('commission_paid_bool','=',True)]}"/>
+                                        <field name="commission_first_payment" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="commi_year_id" widget="selection" readonly="1"/>
+                                        <field name="commission_percentage" readonly="1"/>
+                                        <field name="calculate_broker_commission" readonly="1"/>
+                                    </group>
+                                </group>
+                                <separator string="Commission Payments/Adjustments" style="color:red;"/>
+                                <field name="broker_reconcile_ids">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission"/>
+                                        <field name="user_id"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="comm_amount"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="full_commission"/>
+                                        <field name="brokercommission_amount_total"/>
+                                        <field name="commission_to_pay"/>
+                                    </group>
+                                </div>
+                            </page>
+                            <page string="External Commission"
+                                  groups="dernetz.group_res_contract_payment_admin">
+                                <group>
+                                    <button name="action_update_broker_commission_data" class="oe_highlight"
+                                            string="Update Broker Commission"
+                                            type="object"/>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="broker_accuracy_checked"
+                                               attrs="{'readonly':[('broker_commission_paid_bool','=',True)]}"/>
+                                        <field name="broker_commission_paid_bool"
+                                               attrs="{'readonly':[('broker_commission_paid_bool','=',True)]}"/>
+                                        <field name="broker_commission_payment_quant"
+                                               attrs="{'readonly':[('broker_commission_paid_bool','=',True)]}"/>
+                                        <field name="broker_date_finalised"
+                                               attrs="{'readonly':[('broker_commission_paid_bool','=',True)]}"/>
+                                        <field name="broker_commission_first_payment" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="broker_commi_year_id" widget="selection" readonly="1"/>
+                                        <field name="broker_commission_percentage" readonly="1"/>
+                                        <field name="calculate_external_broker_commission" readonly="1"/>
+                                    </group>
+                                </group>
+                                <separator string="Commission Payments/Adjustments" style="color:red;"/>
+                                <field name="external_broker_reconcile_ids" context="{'default_is_external_broker':True}">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission"/>
+                                        <field name="user_id"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="comm_amount"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="is_external_broker" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="external_full_commission"/>
+                                        <field name="ext_brokercommission_amount_total"/>
+                                        <field name="ext_commission_to_pay"/>
+                                    </group>
+                                </div>
+                            </page>
+                            <page string="Supplier Reconciliation"
+                                  groups="dernetz.group_res_contract_payment_admin">
+                                <group>
+                                    <!--<field name="paid_annually"/>-->
+                                </group>
+                                <separator string="Supplier Reconciliation"/>
+                                <field name="commission_reconcile_ids">
+                                    <tree editable="top">
+                                        <field name="create_datetime_commission" required="1"/>
+                                        <field name="user_id" required="1"/>
+                                        <field name="receipt_date"/>
+                                        <field name="receipt_reference"/>
+                                        <field name="consumption"/>
+                                        <field name="com_amount"/>
+                                        <field name="com_deducted_amount"/>
+                                    </tree>
+                                </field>
+                                <div style="text-align:right;float:right;font-size:20px;font-weight:bold;">
+                                    <group>
+                                        <field name="total_amount_paid"/>
+                                    </group>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!--<field name="activity_ids" widget="mail_activity"/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+
+        </record>
+
+        <!--SALESTEAM-->
+        <record id="contract_form_view_salesteam" model="ir.ui.view">
+            <field name="name">Contract View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_contract_salesteam')])]"/>
+            <field name="arch" type="xml">
+                <form string="Contract">
+                    <header>
+                        <button name="action_verbal" string="Verbal" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_verbal','!=',True),('state','!=','draft')]}"/>
+                        <button name="action_written" string="Written" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_written','!=',True),('state','!=','draft')]}"/>
+                        <button name="action_electronic" string="Electronic" type="object" icon="fa-star"
+                                attrs="{'invisible': ['|',('via_electronic','!=',True),('state','!=','draft')]}"/>
+                        <button name="action_sale_confirmed" type="object" string="Sale Confimed" class="oe_highlight"
+                                icon="fa-star" states="draft"/>
+                        <button name="action_contract_query" string="Sales Query" type="object" icon="fa-star"
+                                states="draft,sale_agreed,confirmed,accepted,admin_query" class="oe_highlight"/>
+                        <button name="action_admin_query" string="Return Query" type="object" icon="fa-star"
+                                states="query" class="oe_highlight"/>
+                        <!--<button name="action_cot_cancel" string="COT Cancelled" type="object" icon="fa-star"-->
+                        <!--class="oe_highlight"-->
+                        confirm="Are you sure ?"/>
+                        <button name="action_cancel" string="Cancel" icon="fa-star" confirm="Are you sure ?"
+                                states="draft,doc_pending,sale_agreed,confirmed,accepted,complete,livenocis_scanned,payment_confirmed,admin_query,query,cot_cancelled"
+                                type="object" class="oe_highlight"/>
+                        <button name="action_reset_to_draft" string="Reset to draft" type="object" icon="fa-star"
+                                states="cancelled,cot_cancelled,doc_pending,docusign_pending" class="oe_highlight"/>
+                        <!--<button name="action_cancel_draft" string="Rest To Draft" type="object" class="btn-primary" states="cancel"/>-->
+                        <button name="action_return_to_prev_state" type="object"
+                                states="admin_query" string="Return To Previous State"
+                                icon="fa-star" class="oe_highlight"/>
+                        <!--groups="dernetz.group_res_contract_sales_query_handler"-->
+                        <button name="action_renew_contract"
+                                type="object" class="oe_highlight"
+                                string="Renew Contract"
+                                attrs="{'invisible': ['|',('state','not in',('complete','payment_confirmed','livenocis_scanned')),
+                                ('superseded','=',True)]}"/>
+                        <button name="action_send_docusign_doc" string="Send DocuSign Documents" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_udicore_docusign" string="UDICore Docusign" type="object"
+                                class="oe_highlight"/>
+                    </header>
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,doc_pending,docusign_pending,sale_agreed,confirmed,accepted,live,complete,livenocis_scanned,payment_confirmed,query,admin_query,cot_cancelled,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group style="text-align:left;float:left; margin:0px">
+                            <group style="margin:0px">
+                                <group style="margin:0px">
+                                    <group class="oe_button_box" name="button_box" style="text-align:left;float:left;">
+                                        <!--<button class="oe_stat_button" type="action" icon="fa-outdent"-->
+                                                <!--name="get_all_notes_from_customer">-->
+                                            <!--<field name="note_button" widget="statinfo" string="NOTE!!"/>-->
+                                        <!--</button>-->
+                                        <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                                name="action_view_meter_data">
+                                            <field name="meter_data" widget="statinfo" string="METER DATA!!"/>
+                                        </button>
+                                    </group>
+                                </group>
+                            </group>
+                            <group style="text-align:right;float:right; margin:0px">
+                                <div style="font-size:26px;font-weight:bold;color:#7C7BAD;">
+                                    <label for="docusign_received" string="Docusign"
+                                           style="font-size:26px;font-weight:bold;color:#7C7BAD;"/>
+                                    <field name="docusign_received" />
+                                </div>
+                                <group style="margin:0px">
+                                    <group style="margin:0px;text-align:right;float:right;">
+                                        <!--<group style="text-align:right;float:right;">-->
+                                        <!--<label for="superseded" string="Superseded:" style="font-size:20px;"/>-->
+                                    <div style="font-weight:bold;color:#7C7BAD;">
+                                        <label for="docusign_sent_datetime" string="SENT"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_sent_datetime" class="oe_inline"/>
+                                        <label for="docusign_received_datetime" string="RECEIVED"
+                                               style="font-weight:bold;color:#7C7BAD;"/>
+                                        <field name="docusign_received_datetime" class="oe_inline"/>
+
+                                    </div>
+                                    </group>
+                                    <group>
+                                        <field name="superseded"/>
+                                        <!--<label for="days_to_expiry" string="Day To Expiry:" style="font-size:20px;"/>-->
+                                        <field name="days_to_expiry"/>
+                                        <field name="days_to_loa_expiry"/>
+                                        <!--</group>-->
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="contract_name" string="Contract:" style="font-size:20px;"/>
+                                <field name="contract_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <group colspan="4">
+                                    <field name="partner_id" readonly="1" required="1"/>
+                                    <field name="des_partner_id" domain="[('parent_id', '=', partner_id)]"
+                                           attrs="{'readonly': [('state','in',('complete','confirmed', 'payment_confirmed', 'livenocis_scanned'))]}"/>
+                                    <field name="address_id" domain="[('parent_id','=',partner_id)]"/>
+                                    <field name="supplier_id" required="1" widget="selection"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    <field name="supplier_for_docusign"/>
+                                    <field name="supplier_ref" readonly="1"/>
+                                    <!--<field name="loa_lead_time"/>-->
+                                    <field name="use_parent_address" readonly="1"/>
+                                    <label for="street" string="Address"/>
+                                    <div>
+                                        <div class="o_address_format">
+                                            <field name="street" placeholder="Street..." class="o_address_street"
+                                                   readonly="1"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                                   readonly="1"/>
+                                            <field name="city" placeholder="City" class="o_address_city" readonly="1"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State"
+                                                   readonly="1"/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip" readonly="1"/>
+                                            <field name="country_id" placeholder="Country" class="o_address_country"
+                                                   options='{"no_open": True, "no_create": True}'
+                                                   domain="[('code','=','GB')]" readonly="1"/>
+                                        </div>
+                                    </div>
+                                    <field name="last_state" invisible="1" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="rec_name" readonly="1"/>
+                                        <field name="sale_name" readonly="1"/>
+                                        <field name="sale_order_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_sales_team'}"/>
+                                        <field name="renew_so_id" readonly="1"
+                                               context="{'form_view_ref': 'dernetz.sale_form_view_sales_team'}"/>
+                                        <field name="order_type" readonly="1"/>
+                                        <field name="so_boolean" readonly="1"/>
+                                        <field name="co_boolean" readonly="1"/>
+                                        <!--                                        <field name="sale_order_id"/>-->
+                                        <!--                                        <field name="sale_order_line_id"/>-->
+                                        <field name="meter_data_id" readonly="1"/>
+                                        <field name="start_date"/>
+                                        <field name="commission_date" readonly="1"/>
+                                        <field name="livenocis" readonly="1"/>
+                                        <field name="payment_confirmed_date" readonly="1"/>
+                                        <field name="year_duration"/>
+                                        <field name="end_date"/>
+                                        <field name="confirmation_date" readonly="1"/>
+                                    </group>
+                                    <group colspan="4">
+
+                                        <field name="date_admin_confirm" readonly="1"/>
+                                        <field name="loa_expiry" readonly="1"/>
+                                        <field name="cot_date" readonly="1"/>
+                                        <field name="cancelled_date" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group colspan="4">
+                                        <field name="categ_id" readonly="1" widget="selection"/>
+                                        <field name="usage" readonly="1"/>
+                                        <field name="proof_of_usage" readonly="1"/>
+                                        <field name="pricing_type"/>
+                                    </group>
+                                    <group colspan="4">
+                                        <field name="uplift_value"/>
+                                        <field name="broker_uplift"/>
+                                        <field name="supplier_uplift"/>
+                                        <field name="broker_commission" readonly="1"/>
+                                        <field name="ad_hoc_commission" readonly="1"/>
+                                        <field name="external_broker_commission" readonly="1"/>
+                                        <field name="supplier_commission" readonly="1"/>
+                                        <field name="usage_type_ration" readonly="1"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group string="Base Info">
+                                <group>
+                                    <field name="sse_billing_period"/>
+                                    <field name="utility_type" readonly="1"/>
+                                    <field name="contract_account_id" widget="selection"/>
+                                    <field name="previous_supplier_id" widget="selection"/>
+                                    <field name="previous_contract_end_date"/>
+                                    <field name="contract_type_id" widget="selection"/>
+                                    <field name="contract_subtype_id" widget="selection"/>
+                                    <field name="payment_type_id"/>
+                                    <field name="query_code_id"
+                                           invisible="1"/>
+                                    <field name="dd_collection_date"/>
+                                </group>
+                                <group>
+                                    <field name="utility_type_elec_docusign"
+                                           attrs="{'invisible': [('utility_type_gas_docusign','=',True)]}"/>
+                                    <field name="utility_type_gas_docusign"
+                                           attrs="{'invisible': [('utility_type_elec_docusign','=',True)]}"/>
+                                    <field name="debt_with_current_supplier"/>
+                                    <field name="verbal_text_id"
+                                           attrs="{'invisible': [('via_verbal','!=',True)],'required': [('via_verbal','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="written_template_id"
+                                           attrs="{'invisible': [('via_written','!=',True)],'required': [('via_written','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="electronic_template_id"
+                                           attrs="{'invisible': [('via_electronic','!=',True)],'required': [('via_electronic','!=',False)]}"
+                                           readonly="1"/>
+                                    <field name="meter_surcharge"
+                                           attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','accepted','complete','live', 'admin_query','payment_confirmed','livenocis_scanned'))]}"/>
+
+                                </group>
+                                <group string="Sales Confirmation">
+                                    <field name="sale_confirmed_letter_sent" attrs="{'readonly': [('state','in',('sale_agreed','confirmed','accepted','live',
+                                        'complete','livenocis_scanned','payment_confirmed'))]}"/>
+                                    <field name="sale_confirmed_date" attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','accepted','live',
+                                        'complete','livenocis_scanned','payment_confirmed'))]}"/>
+                                    <field name="welcome_letter_sent" attrs="{'readonly': [('state','in',('sale_agreed','confirmed','accepted','live',
+                                        'complete','livenocis_scanned','payment_confirmed'))]}"/>
+                                    <field name="welcome_letter_date" attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','accepted','live',
+                                        'complete','livenocis_scanned','payment_confirmed'))]}"/>
+                                    <field name="via_verbal" readonly="1"/>
+                                    <field name="via_written" readonly="1"/>
+
+                                </group>
+
+                                <group string="Billing">
+                                    <field name="via_electronic" readonly="1"/>
+                                    <field name="smart_meter"
+                                           attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                                    <field name="bei"
+                                           attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                                    <field name="ebilling"
+                                           attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                                    <field name="renew_check"
+                                           invisible="1"/>
+                                    <field name="acquisition_bool"
+                                           invisible="1"/>
+                                    <field name="check_renew"
+                                           invisible="1"/>
+                                    <field name="presale_termination_issued"/>
+                                    <field name="date_terminate_psti"
+                                           attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+                                </group>
+                                <label for="supplier_acceptance_code_psti" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+                                <field name="supplier_acceptance_code_psti"
+                                       attrs="{'invisible': [('presale_termination_issued','=',False)]}"/>
+
+                            </group>
+                            <group string="Sales Info">
+                                <group colspan="4">
+                                    <field name="renew_id" readonly="1"/>
+                                    <field name="company_id"/>
+                                    <field name="user_id" readonly="1"/>
+                                    <filed name="previous_user_id"/>
+                                    <field name="default_section_id"
+                                           attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','live','accepted','complete', 'admin_query','payment_confirmed','livenocis_scanned'))]}"/>
+                                    <field name="admin_user_id" readonly="1"/>
+                                    <field name="admin_pro_user_id" readonly="1"/>
+                                    <field name="sale_query_agent" options="{'no_create_edit': True}" readonly="1"/>
+                                    <field name="sale_query_level" readonly="1"/>
+                                    <field name="agent_id" readonly="1" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="confirmation_medium"/>
+                                    <field name="contract_terminated" readonly="1"
+                                           attrs="{'invisible': [('state','not in',['complete'])]}"/>
+                                    <field name="date_terminate" groups="dernetz.group_contract_admin"
+                                           readonly="1"
+                                           attrs="{'invisible': [('contract_terminated','!=',True)],'required': [('contract_terminated','!=',False)]}"/>
+                                    <field name="contract_audited"
+                                           attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','accepted','complete','live', 'admin_query','payment_confirmed','livenocis_scanned'))]}"/>
+                                    <field name="date_audit" readonly="1"/>
+                                    <field name="paid_annually" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="service_id" attrs="{'invisible': [('utility_type','=','ele')]}"/>
+                                    <!--<field name="split_contract"/>-->
+                                    <!--<field name="water_export"/>-->
+                                    <!--<field name="water_export_date"/>-->
+                                    <field name="poor_credit"/>
+                                    <field name="clean_user_id" readonly="1"/>
+                                    <field name="clean_datetime"
+                                           attrs="{'readonly': [('state','in',('docusign_pending','sale_agreed','confirmed','live','accepted','complete', 'admin_query','payment_confirmed','livenocis_scanned'))]}"/>
+                                </group>
+                                <label for="supplier_acceptance_code" string="Supplier Acceptance Code"
+                                       attrs="{'invisible': [('contract_terminated','=',False)]}"/>
+                                <field name="supplier_acceptance_code" readonly="1"
+                                       attrs="{'invisible': [('contract_terminated','!=',True)],'required': [('contract_terminated','!=',False)]}"
+                                />
+                            </group>
+                            <group string="Our Export Details"
+                                   groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin">
+                                <field name="export_flag"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_date"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_flag_2"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_date_2"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="lost" groups="dernetz.group_contract_sys_admin"/>
+                            </group>
+                            <group string="Customer Export Details">
+                                <field name="export_flag_3"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_date_3"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_flag_4"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="export_date_4"
+                                       groups="dernetz.group_contract_admin,dernetz.group_contract_sys_admin,dernetz.group_res_contract_payment_admin"
+                                       readonly="1"/>
+                                <field name="cot_ref" readonly="1"/>
+                                <field name="attach_to_con"
+                                       attrs="{'readonly': [('state','in',('complate','livenocis_scanned'))]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Note">
+                                <field name="general_note_contract_ids">
+                                    <tree string="General Note">
+                                        <field name="log_date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                        <field name="contract_id"/>
+                                    </tree>
+                                    <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                        <group colspan="4">
+                                            <field name="name"/>
+                                        </group>
+                                    </form>
+
+                                </field>
+                            </page>
+
+                            <page string="Sales Note">
+                                <!--</group>-->
+                                <!--<group string="Sales Team Notes">-->
+                                <separator string="Sales Team Notes" style="color:red;"/>
+                                <field name="note_sales_ids" attrs="{'readonly': [('state','!=','admin_query')]}">
+                                    <tree string="Sales Note Line" editable="top">
+                                        <field name="date"/>
+                                        <field name="query_code_id"/>
+                                        <field name="user_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                                <!--</group>-->
+                            </page>
+                            <!--<page string="History">-->
+                            <!--<separator string="History"/>-->
+                            <!--<field name="contract_send_mail_history_line_ids">-->
+                            <!--<tree>-->
+                            <!--<field name="name"/>-->
+                            <!--<field name="date"/>-->
+                            <!--<field name="write_uid"/>-->
+                            <!--<field name="state_from"/>-->
+                            <!--<field name="state_to"/>-->
+                            <!--</tree>-->
+                            <!--</field>-->
+                            <!--</page>-->
+                            <!--<page string="Internal Commission">-->
+                            <!--<group>-->
+                            <!--<button name="action_update_commission_data" string="Update Commission"-->
+                            <!--class="oe_highlight" type="object"/>-->
+                            <!--</group>-->
+                            <!--<group>-->
+                            <!--<group>-->
+                            <!--<field name="check_accuracy"/>-->
+                            <!--<field name="commission_payment_quant"/>-->
+                            <!--<field name="commission_paid_bool"/>-->
+                            <!--<field name="date_finalised"/>-->
+                            <!--<field name="month_paid"/>-->
+                            <!--<field name="commission_first_payment"/>-->
+                            <!--</group>-->
+                            <!--<group>-->
+                            <!--<field name="commi_year_id"/>-->
+                            <!--<field name="commission_percentage"/>-->
+                            <!--<field name="calculate_broker_commission"/>-->
+                            <!--</group>-->
+                            <!--</group>-->
+                            <!--<separator string="Commission Payments/Adjustments" style="color:red;"/>-->
+                            <!--<field name="broker_reconcile_ids">-->
+                            <!--<tree editable="top">-->
+                            <!--<field name="create_datetime_commission"/>-->
+                            <!--<field name="user_id"/>-->
+                            <!--<field name="receipt_date"/>-->
+                            <!--<field name="receipt_reference"/>-->
+                            <!--<field name="comm_amount"/>-->
+                            <!--<field name="currency_id" invisible="1"/>-->
+                            <!--</tree>-->
+                            <!--</field>-->
+                            <!--<div style="text-align:right;float:right;font-size:20px;font-weight:bold;">-->
+                            <!--<group>-->
+                            <!--<field name="full_commission"/>-->
+                            <!--<field name="brokercommission_amount_total"/>-->
+                            <!--<field name="commission_to_pay"/>-->
+                            <!--</group>-->
+                            <!--</div>-->
+                            <!--</page>-->
+                            <!--<page string="External Commission">-->
+                            <!--<group>-->
+                            <!--<button name="action_update_broker_commission_data" class="oe_highlight"-->
+                            <!--string="Update Broker Commission"-->
+                            <!--type="object"/>-->
+                            <!--</group>-->
+                            <!--<group>-->
+                            <!--<group>-->
+                            <!--<field name="broker_accuracy_checked"/>-->
+                            <!--<field name="broker_commission_paid_bool"/>-->
+                            <!--<field name="broker_commission_payment_quant"/>-->
+                            <!--<field name="broker_date_finalised"/>-->
+                            <!--<field name="broker_commission_first_payment"/>-->
+                            <!--</group>-->
+                            <!--<group>-->
+                            <!--<field name="broker_commi_year_id"/>-->
+                            <!--<field name="broker_commission_percentage"/>-->
+                            <!--<field name="calculate_external_broker_commission"/>-->
+                            <!--</group>-->
+                            <!--</group>-->
+                            <!--<separator string="Commission Payments/Adjustments" style="color:red;"/>-->
+                            <!--<field name="external_broker_reconcile_ids">-->
+                            <!--<tree editable="top">-->
+                            <!--<field name="create_datetime_commission"/>-->
+                            <!--<field name="user_id"/>-->
+                            <!--<field name="receipt_date"/>-->
+                            <!--<field name="receipt_reference"/>-->
+                            <!--<field name="comm_amount"/>-->
+                            <!--<field name="currency_id" invisible="1"/>-->
+                            <!--</tree>-->
+                            <!--</field>-->
+                            <!--<div style="text-align:right;float:right;font-size:20px;font-weight:bold;">-->
+                            <!--<group>-->
+                            <!--<field name="external_full_commission"/>-->
+                            <!--<field name="ext_brokercommission_amount_total"/>-->
+                            <!--<field name="ext_commission_to_pay"/>-->
+                            <!--</group>-->
+                            <!--</div>-->
+                            <!--</page>-->
+                            <!--<page string="Supplier Reconciliation">-->
+                            <!--<group>-->
+                            <!--<field name="paid_annually"/>-->
+                            <!--</group>-->
+                            <!--<separator string="Supplier Reconciliation"/>-->
+                            <!--<field name="commission_reconcile_ids">-->
+                            <!--<tree editable="top">-->
+                            <!--<field name="create_datetime_commission"/>-->
+                            <!--<field name="user_id"/>-->
+                            <!--<field name="receipt_date"/>-->
+                            <!--<field name="receipt_reference"/>-->
+                            <!--<field name="consumption"/>-->
+                            <!--<field name="com_amount"/>-->
+                            <!--<field name="com_deducted_amount"/>-->
+                            <!--</tree>-->
+                            <!--</field>-->
+                            <!--<div style="text-align:right;float:right;font-size:20px;font-weight:bold;">-->
+                            <!--<group>-->
+                            <!--<field name="total_amount_paid"/>-->
+                            <!--</group>-->
+                            <!--</div>-->
+                            <!--</page>-->
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!--<field name="activity_ids" widget="mail_activity"/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+
+        </record>
+
+        <record id="contract_tree_view" model="ir.ui.view">
+            <field name="name">Contract Tree</field>
+            <field name="model">res.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Contract tree">
+                    <field name="contract_name"/>
+                    <field name="confirmation_date"/>
+                    <field name="end_date"/>
+                    <field name="days_to_expiry"/>
+                    <field name="utility_type"/>
+                    <field name="mpan_code"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="admin_user_id"/>
+                    <field name="admin_pro_user_id"/>
+                    <field name="sale_query_agent"/>
+                    <field name="sale_query_level"/>
+                    <field name="supplier_id"/>
+                    <field name="state"/>
+                    <field name="docusign_received"/>
+                    <field name="state_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_contract_search_view">
+            <field name="name">res.contract.search</field>
+            <field name="model">res.contract</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search contract">
+                    <group>
+                        <field name="contract_name"/>
+                        <field name="meter_data_id"/>
+                        <field name="confirmation_date"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="categ_id"/>
+                        <field name="mpan_code"/>
+                        <field name="profile_id"/>
+                        <field name="mtc_code"/>
+                        <field name="region_id"/>
+                        <field name="qty"/>
+                        <field name="usage" widget="integer"/>
+                        <field name="partner_id"/>
+                        <field name="address_id"/>
+                        <field name="user_id"/>
+                        <field name="default_section_id"/>
+                        <field name="supplier_id"/>
+                        <!--<field name="so_id" />-->
+                        <field name="state"/>
+                        <!--<field name="id_partner" />-->
+                    </group>
+                    <newline/>
+                    <newline/>
+                    <newline/>
+                    <group>
+                        <field name="sale_name"/>
+                        <field name="sale_partner_id"/>
+                        <field name="sale_start_date"/>
+                        <field name="sale_end_date"/>
+                        <field name="sale_categ_id"/>
+                    </group>
+                    <newline/>
+                    <!--<group expand="0" string="Group By...">-->
+                    <!--<filter string="Partner" icon="terp-personal"-->
+                    <!--domain="[]" context="{'group_by' : 'partner_id'}" />-->
+                    <!--<filter string="State"-->
+                    <!--icon="terp-stock_symbol-selection" domain="[]"-->
+                    <!--context="{'group_by' : 'state'}" />-->
+                    <!--<filter string="Supplier" icon="terp-personal"-->
+                    <!--domain="[]" context="{'group_by' : 'supplier_id'}" />-->
+                    <!--<filter string="User" domain="[]"-->
+                    <!--context="{'group_by' : 'user_id'}" />-->
+                    <!--<filter string="Region" domain="[]"-->
+                    <!--context="{'group_by' : 'region_id'}" />-->
+                    <!--<filter string="Profile" domain="[]"-->
+                    <!--context="{'group_by' : 'profile_id'}" />-->
+                    <!--<filter string="Start Date" domain="[]"-->
+                    <!--context="{'group_by' : 'start_date'}" />-->
+                    <!--<filter string="End Date" domain="[]"-->
+                    <!--context="{'group_by' : 'end_date'}" />-->
+                    <!--<filter string="Confimation Date" domain="[]"-->
+                    <!--context="{'group_by' : 'confirmation_date'}" />-->
+                    <!--<filter string="Sales Team" domain="[]"-->
+                    <!--context="{'group_by': 'default_section_id'}" />-->
+                    <!--</group>-->
+                </search>
+            </field>
+        </record>
+
+
+        <!--contract action view SYSADMIN-->
+        <record model="ir.actions.act_window" id="contract_action_view">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'contract_menu': True}</field>
+            <field name="domain">[('co_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="contract_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_tree_sysadmin">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="contract_tree_view"/>
+            <field name="act_window_id" ref="contract_action_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_form_sysadmin">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contract_form_view"/>
+            <field name="act_window_id" ref="contract_action_view"/>
+        </record>
+
+        <!-- ADMIN/PAYMENT-->
+        <record model="ir.actions.act_window" id="action_contract_view_admin_pay_admin">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'contract_menu': True}</field>
+            <field name="domain">[('co_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="contract_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_tree_admin_pay_admin">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="contract_tree_view"/>
+            <field name="act_window_id" ref="action_contract_view_admin_pay_admin"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_form_admin_pay_admin">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contract_form_view_admin_pay_admin"/>
+            <field name="act_window_id" ref="action_contract_view_admin_pay_admin"/>
+        </record>
+
+        <!-- SALESTEAM-->
+        <record model="ir.actions.act_window" id="action_contract_view_salesteam">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'contract_menu': True}</field>
+            <field name="domain">[('co_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="contract_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_tree_salesteam">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="contract_tree_view"/>
+            <field name="act_window_id" ref="action_contract_view_salesteam"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_contract_form_salesteam">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contract_form_view_salesteam"/>
+            <field name="act_window_id" ref="action_contract_view_salesteam"/>
+        </record>
+
+
+        <!--menu Contract-->
+        <menuitem id="menu_contract_main" name="Contract" sequence="1"
+                  web_icon="dernetz,static/src/img/Contract.png"/>
+        <menuitem id="contract_utility_menu_sysadmin" name="Contract"
+                  parent="menu_contract_main" sequence="1"
+                  groups="dernetz.group_contract_admin,dernetz.group_res_contract_payment_admin,dernetz.group_contract_salesteam,dernetz.group_contract_sys_admin,dernetz.group_contract_salesteam_all,dernetz.group_contract_salesteam_all_readonly_user"/>
+        <menuitem id="contract_utility_main" name="Contract" action="contract_action_view"
+                  parent="contract_utility_menu_sysadmin" sequence="1"
+                  groups="dernetz.group_contract_sys_admin"/>
+
+        <menuitem id="contract_utility_main_admin_pay_admin" name="Contract"
+                  action="action_contract_view_admin_pay_admin"
+                  parent="contract_utility_menu_sysadmin" sequence="1"
+                  groups="dernetz.group_contract_admin,dernetz.group_res_contract_payment_admin"/>
+
+        <menuitem id="contract_utility_main_salesteam" name="Contract" action="action_contract_view_salesteam"
+                  parent="contract_utility_menu_sysadmin" sequence="1"
+                  groups="dernetz.group_contract_salesteam,dernetz.group_contract_salesteam_all,dernetz.group_contract_salesteam_all_readonly_user"/>
+
+
+    </data>
+</odoo>

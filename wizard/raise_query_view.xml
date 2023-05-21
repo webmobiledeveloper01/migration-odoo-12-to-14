@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_contract_query" model="ir.ui.view">
+            <field name="name">Contract Query</field>
+            <field name="model">contract.query</field>
+            <field name="arch" type="xml">
+				<form string="Contract Query">
+                    <group colspan="4" col="4">
+                    	<field name="query_code_id" attrs="{'readonly': [('query_check', '!=', False)]}"/>
+                    	<field name="contract_id" readonly="1"/>
+                    	<field name="query_check" invisible="1"/>
+                    	<newline/>
+                    	<label for="note" string="Your Query"/>
+                    	<newline/>
+                    	<field name="note" nolabel="1" colspan="4"/>
+                    </group>
+                    <group>
+                        <button special="cancel" string="Cancel"  />
+                        <button name="raise_query" string="Raise Query" type="object" class="oe_highlight"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_contract_query" model="ir.actions.act_window">
+            <field name="name">Contract Query</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">contract.query</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_contract_query"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

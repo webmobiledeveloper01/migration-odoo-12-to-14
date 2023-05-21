@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+
+        <record id="send_udcore_docusign_form" model="ir.ui.view">
+            <field name="name">send.udcore.docusign.form</field>
+            <field name="model">send.udcore.docusign</field>
+            <field name="arch" type="xml">
+                <form string="UDcore Docusign">
+                    <sheet>
+                        <group>
+                            <field name="email"/>
+                        </group>
+                        <footer>
+                            <button name="send_docusign" string="Send Docusign" type="object"/>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_send_udcore_docusign" model="ir.actions.act_window">
+            <field name="name">UDcore Docusign</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">send.udcore.docusign</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="send_udcore_docusign_menu" name="Send Docusign Wizard" action="action_send_udcore_docusign"
+                  parent="menu_docusign_config" sequence="55"/>
+
+    </data>
+</odoo>

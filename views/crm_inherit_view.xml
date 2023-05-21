@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_crm_inherit_form" model="ir.ui.view">
+            <field name="name">crm.team.form</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="sales_team.crm_team_view_form" />
+            <field name="arch" type="xml">
+                 <xpath expr="//group/group[@name='left']" position="after">
+                    <group>
+                        <field name="vatable"/>
+                        <field name="vat_rate"/>
+                        <field name="broker_split" />
+                        <field name="upfront_payment" />
+                       <!-- <field name="broker_percentage_split"/>-->
+                        <field name="external_broker"/>
+                    </group>
+
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                	<page string="Partners" name="partner">
+                		<field name="partner_ids"/>
+                	</page>
+                    <page string="Note">
+                        <field name="note"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

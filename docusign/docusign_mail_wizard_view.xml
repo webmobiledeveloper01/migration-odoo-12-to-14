@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+
+        <record id="docusign_mail_wizard_form" model="ir.ui.view">
+            <field name="name">docusign.mail.wiz.form</field>
+            <field name="model">docusign.mail.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Docusign Mail Wizard">
+                    <!--<header>-->
+                        <!--<button name="create_attachment" type="object" string="Attachment"/>-->
+                    <!--</header>-->
+                    <sheet>
+                         <group>
+                            <field name="res_id" invisible="1"/>
+                            <!-- visible wizard -->
+                            <label for="partner_ids" string="Recipients"
+                                />
+                            <div>
+                                <field name="partner_ids" widget="many2many_tags_email"
+                                    placeholder="Add contacts to notify..."/>
+                            </div>
+                            <field name="subject" placeholder="Subject..."/>
+                        </group>
+                        <field name="body"/>
+
+                        <field name="attachment_ids" widget="many2many_tags" nolabel="1"/>
+                        <group col="4" colspan="4">
+                            <field name="loa_attached" readonly="1"/>
+                            <field name="supplier_id" invisible="1" />
+                            <field name="partner_id" invisible="1"/>
+                            <field name="payment_type_bool" invisible="1"/>
+                            <!--<field name="partner_ids" widget="many2many_tags"/>-->
+                        </group>
+                        <footer>
+                            <button string="Send" name="send_loa_mail" type="object" class="oe_highlight"/>
+                            Or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                            <!--<group class="oe_subtotal_footer oe_right" col="4" colspan="4">-->
+                                <!--<div>-->
+                            Use Template
+                            <field name="template_id"/>
+                            <!--<field name="docusign_template_id"/>-->
+                                <!--</div>-->
+                            <!--</group>-->
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <record id="action_docusign_mail_wizard" model="ir.actions.act_window">
+            <field name="name">Docusign Mail Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">docusign.mail.wiz</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menuitem_docusign_mail_wizard" name="Send Docusign Documents" sequence="8"
+                  parent="menu_docusign_config" action="action_docusign_mail_wizard"/>
+
+    </data>
+</odoo>

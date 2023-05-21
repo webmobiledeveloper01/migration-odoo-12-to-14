@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record model="ir.module.category" id="module_category_contract">
+            <field name="name">Contract</field>
+            <field name="description"></field>
+            <field name="sequence">12</field>
+        </record>
+
+        <record id="group_contract_sys_admin" model="res.groups">
+            <field name="name">Contract Sysadmin</field>
+            <field name="category_id" ref="dernetz.module_category_contract"/>
+        </record>
+
+        <record id="group_contract_salesteam_all" model="res.groups">
+            <field name="name">Contract / Salesteam (All)</field>
+            <field name="category_id" ref="dernetz.module_category_contract"/>
+        </record>
+
+        <record id="group_contract_admin" model="res.groups">
+            <field name="name">Contract / Admin Team</field>
+            <field name="category_id" ref="dernetz.module_category_contract" />
+        </record>
+
+        <record model="res.groups" id="group_contract_salesteam">
+            <field name="name">Contract / Salesteam</field>
+            <field name="category_id" ref="dernetz.module_category_contract" />
+        </record>
+
+        <record model="res.groups" id="group_contract_salesteam_all_readonly_user">
+            <field name="name">Contract / Salesteam (All) User</field>
+            <field name="category_id" ref="dernetz.module_category_contract" />
+        </record>
+
+        <record model="res.groups" id="group_res_contract_payment_admin">
+            <field name="implied_ids" eval="[(4, ref('group_contract_admin'))]" />
+            <field name="category_id" ref="dernetz.module_category_contract" />
+            <field name="name">Payments Admin</field>
+        </record>
+
+        <record model="res.groups" id="group_res_contract_sales_query_handler">
+            <field name="category_id" ref="dernetz.module_category_contract" />
+            <field name="name">Sales Query Handler</field>
+        </record>
+
+    </data>
+</odoo>

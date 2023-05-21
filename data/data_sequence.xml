@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="sequence_contract" model="ir.sequence">
+            <field name="name">Contract</field>
+            <field name="code">res.contract</field>
+            <field name="prefix">CO</field>
+            <field name="padding">8</field>
+        </record>
+
+
+        <record id="sequence_sale" model="ir.sequence">
+            <field name="name">Sale Order</field>
+            <field name="code">res.contract</field>
+            <field name="prefix">SO</field>
+            <field name="padding">8</field>
+        </record>
+
+        <record id="sequence_mater_data_line" model="ir.sequence">
+            <field name="name">Meter Data Line</field>
+            <field name="code">meter.data.line</field>
+            <field name="prefix">MDL</field>
+            <field name="padding">8</field>
+        </record>
+
+
+    </data>
+</odoo>

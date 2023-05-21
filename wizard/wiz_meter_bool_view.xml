@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wiz_meter_bool_form_view" model="ir.ui.view">
+            <field name="name">wiz.meter.bool.form.view</field>
+            <field name="model">wiz.meter.bool</field>
+            <field name="arch" type="xml">
+                <form string="Wizard for Meter Data line">
+                    <group string="Click on confirm button show MPAN Code if category is Electricity
+                        and to show MPR code if category is Gas for existing records in meter data line.">
+                        <!--<label string="Click on confirm button show MPAN Code if category is Electricity-->
+                        <!--and to show MPR code if category is Gas for existing records in meter data line."/>-->
+                    </group>
+                    <footer>
+                        <button name="action_mdl_bool" type="object" string="Confirm" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mdl_bool_wizard" model="ir.actions.act_window">
+            <field name="name">Wizard for Meter Data line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wiz.meter.bool</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_mdl_bool_wizard" id="menu_action_mdl_bool" parent="configuration_main"
+            sequence="25" groups="dernetz.group_contract_sys_admin,dernetz.group_contract_admin"/>
+
+    </data>
+</openerp>

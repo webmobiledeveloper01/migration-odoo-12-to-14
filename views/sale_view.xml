@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <!--sale form menu-->
+        <record id="sale_form_view_sysadmin" model="ir.ui.view">
+            <field name="name">Sale View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_contract_sys_admin')])]"/>
+            <field name="arch" type="xml">
+                <form string="Sale">
+                    <header>
+                        <button name="action_sale_draft" type="object" string="Sale Draft"/>
+                        <button name="create_contract" type="object" string="Create Contract"
+                        attrs="{'invisible': ['|',('sale_boolean','=',False),('co_boolean','=',True)]}"/>
+                        <button name="sale_export_tick_button" string="Export Tick" type="object"/>
+                        <button name="action_sale_sent" string="Sale Sent" type="object"/>
+                        <button name="action_sale_cancel" string="Sale Cancel" type="object"/>
+                        <button string="Send Docusign Documents" name="action_send_docusign_wizard"
+                                type="object"/>
+                    </header>
+                    <header>
+                        <field name="sale_state" widget="statusbar" statusbar_visible="draft,contract,sent,cancel"/>
+                    </header>
+                    <sheet>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="sale_name" string="Sale:" style="font-size:20px;"/>
+                                <field name="sale_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div style="float:right">
+                            <group class="oe_button_box" name="button_box" style="text-align:right;float:right;">
+                                <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                        name="action_sale_view_meter_data">
+                                    <field name="sale_meter_data" widget="statinfo" string="METER DATA!!"/>
+                                </button>
+                            </group>
+                        </div><br/><br/>
+                        <div style="font-size:14px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="check_clean" string="Cleansed" style="font-size:18px;"/>
+                                <field name="check_clean" readonly="1"/>
+                                <label for="sale_days_to_expiry" string="Days to Expiry"/>
+                                <field name="sale_days_to_expiry" readonly="1"/>
+                                <field name="sale_document_recieved_date" readonly="1"/>
+                                <field name="sale_document_sent_date" readonly="1"/>
+                            </div>
+                        </div><br/>
+                        <form>
+                            <group string="Sale Information" >
+                                <group>
+                                    <field name="sale_partner_id" required="1"/>
+                                    <field name="designated_part_id" domain="[('parent_id', '=', sale_partner_id)]"/>
+                                    <field name="order_type" readonly="1"/>
+                                    <field name="so_boolean" readonly="1"/>
+                                    <field name="co_boolean" readonly="1"/>
+                                    <field name="rec_name" readonly="1"/>
+                                    <field name="contract_name" readonly="1"/>
+                                    <field name="sale_contract_id" readonly="1"
+                                           context="{'form_view_ref': 'dernetz.contract_form_view'}"/>
+                                    <field name="sale_meter_data_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="date_order"/>
+                                    <field name="client_order_ref"/>
+                                    <field name="sale_agent_check"/>
+                                    <field name="section_id" attrs="{'readonly': [('sale_agent_check','=', False)]}"/>
+                                    <field name="sale_user_id"/>
+                                    <field name="salesman_id"/>
+                                    <field name="sale_new_sales_agent"/>
+                                    <field name="sale_export_flag"/>
+                                    <field name="sale_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_supplier_id"/>
+                                    <field name="sale_start_date"/>
+                                    <field name="sale_end_date"/>
+                                    <field name="sale_categ_id"/>
+                                    <field name="sale_pricing_type"/>
+                                    <field name="sale_commission"/>
+                                    <field name="sale_usage"/>
+                                </group>
+                                <group>
+                                    <field name="sale_year_duration"/>
+                                    <field name="sale_uplift_value"/>
+                                    <field name="sale_broker_uplift_value"/>
+                                    <field name="sale_supplier_uplift"/>
+                                    <field name="sale_usage_type_ratio" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="sale_payment_type_bool" invisible="1"/>
+                                    <field name="sale_payment_type_id"/>
+                                    <field name="sale_dd_collection_date" attrs="{'invisible': [('sale_payment_type_bool','!=',True)]}"/>
+                                    <field name="sale_account_id"/>
+                                    <field name="sale_contract_type_id"/>
+                                    <field name="sale_contract_subtype_id"/>
+                                    <field name="sale_previous_contract_end_date" invisible="1"/>
+                                    <field name="sale_split_contract"/>
+                                    <field name="sale_water_export"/>
+                                    <field name="sale_water_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_smart_meter"/>
+                                    <field name="sale_bei"/>
+                                    <field name="sale_ebilling"/>
+                                    <field name="cleansed_on"/>
+                                    <field name="cleansed_by"/>
+                                    <field name="sale_meter_surcharge"/>
+                                    <field name="sys_contract_id"/>
+                                    <field name="old_sys_id"/>
+                                    <field name="sale_action" invisible="1"/>
+                                    <field name="sale_boolean" invisible="1"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="General Note">
+                                    <field name="general_note_contract_ids">
+                                        <tree string="General Note">
+                                            <field name="log_date"/>
+                                            <field name="query_code_id"/>
+                                            <field name="user_id"/>
+                                            <field name="name"/>
+                                            <field name="contract_id"/>
+                                        </tree>
+                                        <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                            <group colspan="4">
+                                                <field name="name"/>
+                                            </group>
+                                    </form>
+                                    </field>
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="sale_description"/>
+                            </group>
+                            <div class="oe_chatter">
+                                <field name="message_follower_ids" widget="mail_followers"/>
+                                <!--<field nam  e="activity_ids" widget="mail_activity"/>-->
+                                <field name="message_ids" widget="mail_thread"/>
+                            </div>
+                        </form>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_form_view_admin_pay_admin" model="ir.ui.view">
+            <field name="name">Sale View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_res_contract_payment_admin'), ref('dernetz.group_contract_admin')])]"/>
+            <field name="arch" type="xml">
+                <form string="Sale">
+                    <header>
+                        <button name="action_sale_draft" type="object" string="Sale Draft"/>
+                        <button name="create_contract" type="object" string="Create Contract"
+                        attrs="{'invisible': ['|',('sale_boolean','=',False),('co_boolean','=',True)]}"/>
+                        <button name="sale_export_tick_button" string="Export Tick" type="object"/>
+                        <button name="action_sale_sent" string="Sale Sent" type="object"/>
+                        <button name="action_sale_cancel" string="Sale Cancel" type="object"/>
+                        <button string="Send Docusign Documents" name="action_send_docusign_wizard"
+                                type="object"/>
+                    </header>
+                    <header>
+                        <field name="sale_state" widget="statusbar" statusbar_visible="draft,contract,sent,cancel"/>
+                    </header>
+                    <sheet>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="sale_name" string="Sale:" style="font-size:20px;"/>
+                                <field name="sale_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div style="float:right">
+                            <group class="oe_button_box" name="button_box" style="text-align:right;float:right;">
+                                <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                        name="action_sale_view_meter_data">
+                                    <field name="sale_meter_data" widget="statinfo" string="METER DATA!!"/>
+                                </button>
+                            </group>
+                        </div><br/><br/>
+                        <div style="font-size:14px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="check_clean" string="Cleansed" style="font-size:18px;"/>
+                                <field name="check_clean" readonly="1"/>
+                                <label for="sale_days_to_expiry" string="Days to Expiry"/>
+                                <field name="sale_days_to_expiry" readonly="1"/>
+                                <field name="sale_document_recieved_date" readonly="1"/>
+                                <field name="sale_document_sent_date" readonly="1"/>
+                            </div>
+                        </div><br/>
+                        <form>
+                            <group string="Sale Information" >
+                                <group>
+                                    <field name="sale_partner_id" required="1"/>
+                                    <field name="designated_part_id" domain="[('parent_id', '=', sale_partner_id)]"/>
+                                    <field name="order_type" readonly="1"/>
+                                    <field name="so_boolean" readonly="1"/>
+                                    <field name="co_boolean" readonly="1"/>
+                                    <field name="rec_name" readonly="1"/>
+                                    <field name="contract_name" readonly="1"/>
+                                    <field name="sale_contract_id" readonly="1"
+                                           context="{'form_view_ref': 'dernetz.contract_form_view_admin_pay_admin'}"/>
+                                    <field name="sale_meter_data_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="date_order"/>
+                                    <field name="client_order_ref"/>
+                                    <field name="sale_agent_check"/>
+                                    <field name="section_id" attrs="{'readonly': [('sale_agent_check','=', False)]}"/>
+                                    <field name="sale_user_id"/>
+                                    <field name="salesman_id"/>
+                                    <field name="sale_new_sales_agent"/>
+                                    <field name="sale_export_flag"/>
+                                    <field name="sale_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_supplier_id"/>
+                                    <field name="sale_start_date"/>
+                                    <field name="sale_end_date"/>
+                                    <field name="sale_categ_id"/>
+                                    <field name="sale_pricing_type"/>
+                                    <field name="sale_commission"/>
+                                    <field name="sale_usage"/>
+                                </group>
+                                <group>
+                                    <field name="sale_year_duration"/>
+                                    <field name="sale_uplift_value"/>
+                                    <field name="sale_broker_uplift_value"/>
+                                    <field name="sale_supplier_uplift"/>
+                                    <field name="sale_usage_type_ratio" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="sale_payment_type_bool" invisible="1"/>
+                                    <field name="sale_payment_type_id"/>
+                                    <field name="sale_dd_collection_date" attrs="{'invisible': [('sale_payment_type_bool','!=',True)]}"/>
+                                    <field name="sale_account_id"/>
+                                    <field name="sale_contract_type_id"/>
+                                    <field name="sale_contract_subtype_id"/>
+                                    <field name="sale_previous_contract_end_date" invisible="1"/>
+                                    <field name="sale_split_contract"/>
+                                    <field name="sale_water_export"/>
+                                    <field name="sale_water_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_smart_meter"/>
+                                    <field name="sale_bei"/>
+                                    <field name="sale_ebilling"/>
+                                    <field name="cleansed_on"/>
+                                    <field name="cleansed_by"/>
+                                    <field name="sale_meter_surcharge"/>
+                                    <field name="sys_contract_id"/>
+                                    <field name="old_sys_id"/>
+                                    <field name="sale_action" invisible="1"/>
+                                    <field name="sale_boolean" invisible="1"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="General Note">
+                                    <field name="general_note_contract_ids">
+                                        <tree string="General Note">
+                                            <field name="log_date"/>
+                                            <field name="query_code_id"/>
+                                            <field name="user_id"/>
+                                            <field name="name"/>
+                                            <field name="contract_id"/>
+                                        </tree>
+                                        <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                            <group colspan="4">
+                                                <field name="name"/>
+                                            </group>
+                                    </form>
+                                    </field>
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="sale_description"/>
+                            </group>
+                            <div class="oe_chatter">
+                                <field name="message_follower_ids" widget="mail_followers"/>
+                                <!--<field nam  e="activity_ids" widget="mail_activity"/>-->
+                                <field name="message_ids" widget="mail_thread"/>
+                            </div>
+                        </form>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_form_view_sales_team" model="ir.ui.view">
+            <field name="name">Sale View Form</field>
+            <field name="model">res.contract</field>
+            <field name="groups_id"
+                   eval="[(6, 0, [ref('dernetz.group_contract_salesteam')])]"/>
+            <field name="arch" type="xml">
+                <form string="Sale">
+                    <header>
+                        <button name="action_sale_draft" type="object" string="Sale Draft"/>
+                        <button name="create_contract" type="object" string="Create Contract"
+                        attrs="{'invisible': ['|',('sale_boolean','=',False),('co_boolean','=',True)]}"/>
+                        <button name="sale_export_tick_button" string="Export Tick" type="object"/>
+                        <button name="action_sale_sent" string="Sale Sent" type="object"/>
+                        <button name="action_sale_cancel" string="Sale Cancel" type="object"/>
+                        <button string="Send Docusign Documents" name="action_send_docusign_wizard"
+                                type="object"/>
+                    </header>
+                    <header>
+                        <field name="sale_state" widget="statusbar" statusbar_visible="draft,contract,sent,cancel"/>
+                    </header>
+                    <sheet>
+                        <div style="font-size:20px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="sale_name" string="Sale:" style="font-size:20px;"/>
+                                <field name="sale_name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div style="float:right">
+                            <group class="oe_button_box" name="button_box" style="text-align:right;float:right;">
+                                <button class="oe_stat_button" type="object" icon="fa-th-list"
+                                        name="action_sale_view_meter_data">
+                                    <field name="sale_meter_data" widget="statinfo" string="METER DATA!!"/>
+                                </button>
+                            </group>
+                        </div><br/><br/>
+                        <div style="font-size:14px;font-weight:bold;color:#7C7BAD;">
+                            <div style="float:left">
+                                <label for="check_clean" string="Cleansed" style="font-size:18px;"/>
+                                <field name="check_clean" readonly="1"/>
+                                <label for="sale_days_to_expiry" string="Days to Expiry"/>
+                                <field name="sale_days_to_expiry" readonly="1"/>
+                                <field name="sale_document_recieved_date" readonly="1"/>
+                                <field name="sale_document_sent_date" readonly="1"/>
+                            </div>
+                        </div><br/>
+                        <form>
+                            <group string="Sale Information" >
+                                <group>
+                                    <field name="sale_partner_id" required="1"/>
+                                    <field name="designated_part_id" domain="[('parent_id', '=', sale_partner_id)]"/>
+                                    <field name="order_type" readonly="1"/>
+                                    <field name="so_boolean" readonly="1"/>
+                                    <field name="co_boolean" readonly="1"/>
+                                    <field name="rec_name" readonly="1"/>
+                                    <field name="contract_name" readonly="1" />
+                                    <field name="sale_contract_id" readonly="1"
+                                           context="{'form_view_ref': 'dernetz.contract_form_view_salesteam'}"/>
+                                    <field name="sale_meter_data_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="date_order"/>
+                                    <field name="client_order_ref"/>
+                                    <field name="sale_agent_check"/>
+                                    <field name="section_id" attrs="{'readonly': [('sale_agent_check','=', False)]}"/>
+                                    <field name="sale_user_id"/>
+                                    <field name="salesman_id"/>
+                                    <field name="sale_new_sales_agent"/>
+                                    <field name="sale_export_flag"/>
+                                    <field name="sale_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_supplier_id"/>
+                                    <field name="sale_start_date"/>
+                                    <field name="sale_end_date"/>
+                                    <field name="sale_categ_id"/>
+                                    <field name="sale_pricing_type"/>
+                                    <field name="sale_commission"/>
+                                    <field name="sale_usage"/>
+                                </group>
+                                <group>
+                                    <field name="sale_year_duration"/>
+                                    <field name="sale_uplift_value"/>
+                                    <field name="sale_broker_uplift_value"/>
+                                    <field name="sale_supplier_uplift"/>
+                                    <field name="sale_usage_type_ratio" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="sale_payment_type_bool" invisible="1"/>
+                                    <field name="sale_payment_type_id"/>
+                                    <field name="sale_dd_collection_date" attrs="{'invisible': [('sale_payment_type_bool','!=',True)]}"/>
+                                    <field name="sale_account_id"/>
+                                    <field name="sale_contract_type_id"/>
+                                    <field name="sale_contract_subtype_id"/>
+                                    <field name="sale_previous_contract_end_date" invisible="1"/>
+                                    <field name="sale_split_contract"/>
+                                    <field name="sale_water_export"/>
+                                    <field name="sale_water_export_date"/>
+                                </group>
+                                <group>
+                                    <field name="sale_smart_meter"/>
+                                    <field name="sale_bei"/>
+                                    <field name="sale_ebilling"/>
+                                    <field name="cleansed_on"/>
+                                    <field name="cleansed_by"/>
+                                    <field name="sale_meter_surcharge"/>
+                                    <field name="sys_contract_id"/>
+                                    <field name="old_sys_id"/>
+                                    <field name="sale_action" invisible="1"/>
+                                    <field name="sale_boolean" invisible="1"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="General Note">
+                                    <field name="general_note_contract_ids">
+                                        <tree string="General Note">
+                                            <field name="log_date"/>
+                                            <field name="query_code_id"/>
+                                            <field name="user_id"/>
+                                            <field name="name"/>
+                                            <field name="contract_id"/>
+                                        </tree>
+                                        <form string="General Note">
+                                        <group col="4" colspan="4">
+                                            <field name="query_code_id"/>
+                                            <field name="log_date"/>
+                                            <field name="user_id"
+                                                   readonly="1"/>
+                                            <field
+                                                    name="create_date_note"
+                                                    invisible="1"/>
+                                            <field
+                                                    name="create_partner_id"
+                                                    invisible="1"/>
+                                        </group>
+                                            <group colspan="4">
+                                                <field name="name"/>
+                                            </group>
+                                    </form>
+                                    </field>
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="sale_description"/>
+                            </group>
+                            <div class="oe_chatter">
+                                <field name="message_follower_ids" widget="mail_followers"/>
+                                <!--<field nam  e="activity_ids" widget="mail_activity"/>-->
+                                <field name="message_ids" widget="mail_thread"/>
+                            </div>
+                        </form>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="sale_tree_view" model="ir.ui.view">
+            <field name="name">Sale Tree</field>
+            <field name="model">res.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Contract tree">
+                    <field name="sale_name"/>
+                    <field name="sale_end_date"/>
+                    <field name="sale_days_to_expiry"/>
+                    <field name="sale_partner_id"/>
+                    <field name="sale_user_id"/>
+                    <field name="sale_description"/>
+                </tree>
+            </field>
+        </record>
+
+
+                <!--contract action view SYSADMIN-->
+        <record model="ir.actions.act_window" id="sale_action_view_sysadmin">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'sale_menu': True}</field>
+            <field name="domain">[('so_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_tree_sysadmin">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale_tree_view"/>
+            <field name="act_window_id" ref="sale_action_view_sysadmin"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="sale_form_sysadmin">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_form_view_sysadmin"/>
+            <field name="act_window_id" ref="sale_action_view_sysadmin"/>
+        </record>
+
+        <!-- ADMIN/PAYMENT-->
+        <record model="ir.actions.act_window" id="action_sale_view_admin_pay_admin">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'sale_menu': True}</field>
+            <field name="domain">[('so_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_tree_admin_pay_admin">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale_tree_view"/>
+            <field name="act_window_id" ref="action_sale_view_admin_pay_admin"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_form_admin_pay_admin">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_form_view_admin_pay_admin"/>
+            <field name="act_window_id" ref="action_sale_view_admin_pay_admin"/>
+        </record>
+
+        <!-- SALESTEAM-->
+        <record model="ir.actions.act_window" id="action_sale_view_sales_team">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="context">{'sale_menu': True}</field>
+            <field name="domain">[('so_boolean','=',True)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_tree_sales_team">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale_tree_view"/>
+            <field name="act_window_id" ref="action_sale_view_sales_team"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_form_sales_team">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_form_view_sales_team"/>
+            <field name="act_window_id" ref="action_sale_view_sales_team"/>
+        </record>
+
+
+        <!--Main Menu SALE-->
+        <menuitem id="menu_sale_main" name="Sale" sequence="1" web_icon="dernetz,static/src/img/sale.png"/>
+        <menuitem id="sale_utility_main" name="Sale"
+                  parent="menu_sale_main" sequence="1" invisible="1"/>
+
+        <!--MENU SALE SYSADMIN-->
+        <menuitem id="sale_utility_menu_sysadmin" name="Sale" action="sale_action_view_sysadmin"
+                  parent="sale_utility_main" sequence="1" invisible="1"/>
+
+        <!--MENU SALE ADMIN PAY ADMIN-->
+        <menuitem id="sale_utility_main_admin_pay_admin" name="sale"
+                  action="action_sale_view_admin_pay_admin"
+                  parent="sale_utility_main" sequence="1" invisible="1"/>
+
+        <!--MENU SALE SALESTEAM-->
+        <menuitem id="sale_utility_main_sales_team" name="Sale" action="action_sale_view_sales_team"
+                  parent="sale_utility_main" sequence="1" invisible="1"/>
+
+
+    </data>
+</odoo>

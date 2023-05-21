@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_years_in_resident" model="ir.ui.view">
+            <field name="name">years.in.resident</field>
+            <field name="model">years.in.resident</field>
+            <field name="arch" type="xml">
+				<form string="Years In Resident">
+				<header>
+                    <button name="get_create_address" string="Create" type="object" icon="terp-camera_test"/>
+                    <button special="cancel" string="Cancel"  icon="terp-gtk-stop"/>
+				</header>
+				<sheet>
+                    <group col="4">
+                    	<field name="years_in_resident" on_change="onchange_years_in_resident(years_in_resident)"/>
+                    	<field name="flag" invisible="1"/>
+                    </group>
+                    <group col="4" attrs="{'invisible': [('flag','!=',True)]}">
+                    	<group>
+                    		<field name="name" attrs="{'required': [('flag','!=',False)]}"/>
+                            <label for="street" string="Address" />
+                            <div>
+                                <field name="street" placeholder="Street..." attrs="{'required': [('flag','!=',False)]}"/>
+                                <field name="street2" placeholder="Street2..."/>
+                                <div class="address_format">
+                                    <field name="city" placeholder="City" style="width: 40%%"/>
+                                    <field name="state_id" class="oe_no_button" placeholder="County" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                    <field name="zip" placeholder="Post Code" style="width: 20%%"/>
+                                </div>
+                                <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True}'/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_years_in_resident" model="ir.actions.act_window">
+            <field name="name">Years In Resident</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">years.in.resident</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_years_in_resident"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

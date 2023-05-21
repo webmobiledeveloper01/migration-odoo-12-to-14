@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_wizard_broker_contract_comm_rec_sysadmin" model="ir.ui.view">
+            <field name="name">wizard.broker.commission.report.form</field>
+            <field name="model">wizard.broker.commission.report</field>
+            <field name="arch" type="xml">
+            <form string="Broker Commission Report">
+                <group col="4">
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="type" on_change="onchange_report_type(type)"/>
+                    <field name="final_bool" attrs="{'invisible': [('type','!=','all')]}"/>
+                    <field name="mpan_bool"/>
+                    <field name="section_id"/>
+                    <field name="vatable" invisible="1"/>
+                    <field name="user_tot_commission"/>
+                    <field name="user_average_tot"/>
+                    <field name="user_total_uplift"/>
+                    <field name="user_total_usage"/>
+                    <field name="all_users_total_broker_commission"/>
+                    <field name="all_paid_commission"/>
+                    <field name="all_users_vat_total"/>
+                    <field name="all_user_grand_total"/>
+                    <field name="total_commission_mac"/>
+                    <field name="total_broker_commission_mac"/>
+                </group>
+             	<notebook attrs="{'invisible': [('type','=','all')],'required':[('type','!=','all')]}">
+                	<page string="User" >
+                		<!--<field name="users_line">-->
+                			<!--<tree string="Users" editable="bottom">-->
+                				<!--<field name="user_id" context="{'broker_agent':True,'section_id':parent.section_id}"/>-->
+                				<!--<field name="final_bool"/>-->
+                			<!--</tree>-->
+                		<!--</field>-->
+                	</page>
+                </notebook>
+                <footer>
+                    <button name="print_report" string="Generate PDF" type="object" class="oe_highlight"/>
+                    or
+                    <button name="print_report_xls" string="Generate Xls" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_broker_contract_comm_rec_sysadmin" model="ir.actions.act_window">
+            <field name="name">Internal Commissions Report (All)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.broker.commission.report</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+      <menuitem name="Broker Commissions Report (All)"
+            action="action_wizard_broker_contract_comm_rec_sysadmin"
+            id="menu_broker_contract_commission_reconciliation_sysadmin"
+            string=" Internal Commission Report (ICR)"
+            parent="reporting_main_menu"
+            sequence="8" groups="dernetz.group_contract_sys_admin" invisible="1"/>
+
+    </data>
+</odoo>

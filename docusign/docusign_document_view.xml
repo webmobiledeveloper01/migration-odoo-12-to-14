@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_docusign_mail_tree">
+            <field name="name">Docusign Mail Tree</field>
+            <field name="model">docusign.document</field>
+            <field name="arch" type="xml">
+                <tree string="Docusign Emails">
+                    <field name="date"/>
+                    <field name="author_id" string="User"/>
+                    <field name="contract_id"/>
+                    <field name="partner_id"/>
+                    <field name="message_id" invisible="1"/>
+                    <field name="partner_ids"/>
+                    <field name="model" invisible="1"/>
+                    <field name="res_id" invisible="1"/>
+                    <field name="email_from" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_docusign_mail_form" model="ir.ui.view">
+            <field name="name">Docusign Mail Form</field>
+            <field name="model">docusign.document</field>
+            <field name="arch" type="xml">
+                <form string="Docusign Email">
+                    <header>
+                        <button name="send_document_cron_btn" states="draft,fail"
+                                string="Send" type="object"/>
+                        <button name="download_document_cron_btn" states="sent,delivered"
+                                string="Retrieve" type="object"/>
+                        <button name="cancel_document" type="object"
+                                states="draft,sent,delivered,signed,completed,declined,deleted,voided,fail"
+                                string="Cancel"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,sent,delivered,signed,completed,declined,deleted,voided,fail,cancel"/>
+                    </header>
+                    <sheet>
+                        <label for="subject" class="oe_edit_only"/>
+                        <h2>
+                            <field name="subject"/>
+                        </h2>
+                        <div>
+                            by
+                            <field name="author_id" class="oe_inline" string="User"/>
+                            on
+                            <field name="date" class="oe_inline"/>
+                        </div>
+                        <notebook colspan="4">
+                            <page string="Mail Details">
+                                <group>
+                                    <group>
+                                        <field name="email_from"/>
+                                        <field name="email_to"/>
+                                        <field name="email_cc"/>
+                                        <field name="reply_to"/>
+                                    </group>
+                                    <group>
+                                        <field name="partner_ids" widget="many2many_tags_email"/>
+                                        <!--context="{'force_email':True, 'show_email':True}"/>-->
+                                    </group>
+                                </group>
+                                <notebook>
+                                    <page string="Body">
+                                        <field name="body_html" widget="html"/>
+                                    </page>
+                                </notebook>
+                            </page>
+                            <page string="Advanced">
+                                <!--groups="base.group_no_one"-->
+                                <group>
+                                    <group>
+                                        <field name="auto_delete"/>
+                                        <field name="docusign_template_id"/>
+                                        <field name="mail_server_id"/>
+                                        <field name="model"/>
+                                        <field name="res_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="message_id"/>
+                                        <field name="references"/>
+                                        <field name="ref_id"/>
+                                        <field name="env_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Attachments">
+                                <group>
+                                    <field name="attachment_ids" nolabel="1"/>
+                                </group>
+                                <group string="Signed Attachments">
+                                    <field name="sign_attachment_ids" nolabel="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!--groups="base.group_user" />-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_docusign_mail_search" model="ir.ui.view">
+            <field name="name">Docusign Mail Search</field>
+            <field name="model">docusign.document</field>
+            <field name="arch" type="xml">
+                <search string="Docusign Emails">
+                    <field name="date"/>
+                    <field name="contract_id"/>
+                    <field name="subject"/>
+                    <field name="author_id" string="User"/>
+                    <field name="message_id"/>
+                    <field name="partner_ids"/>
+                    <field name="model"/>
+                    <field name="res_id"/>
+                    <field name="email_from"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_view_docusign_mail" model="ir.actions.act_window">
+            <field name="name">Docusign Emails</field>
+            <field name="res_model">docusign.document</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+            <field name="search_view_id" ref="view_docusign_mail_search"/>
+        </record>
+
+        <menuitem id="main_menu_docusign_email" name="DocuSign E-mail" action="action_view_docusign_mail"
+                  parent="menu_docusign_config" sequence="2"/>
+    </data>
+</odoo>

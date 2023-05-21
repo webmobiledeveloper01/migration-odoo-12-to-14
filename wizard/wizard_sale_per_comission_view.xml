@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<record id="view_wizard_sale_per_comission" model="ir.ui.view">
+			<field name="name">Sale Per Comission</field>
+			<field name="model">wizard.sale.per.comission</field>
+			<field name="arch" type="xml">
+				<form string="Print Sale Per Comission">
+<!--					<group col="4">-->
+						<field name="month" />
+						<field name="year" />
+<!--					</group>-->
+					<footer>
+						<button name="print_report" string="Print" type="object"
+							class="oe_highlight" />
+<!--						<button string="Cancel" class="oe_link" special="cancel" />-->
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_wizard_sale_per_comission" model="ir.actions.act_window">
+			<field name="name">Sales &amp; Commission Report</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">wizard.sale.per.comission</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+<!--		<menuitem name="Sales &amp; Commission Report" action="action_wizard_sale_per_comission"-->
+<!--			id="menu_sale_per_comission" parent="base.menu_reporting_dashboard"-->
+<!--			sequence="15" invisible="1"/>-->
+
+</odoo>

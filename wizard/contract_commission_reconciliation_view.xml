@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_wizard_contract_commission_reconciliation" model="ir.ui.view">
+            <field name="name">Contract commission reconciliation</field>
+            <field name="model">wizard.contract.commission.reconciliation</field>
+            <field name="arch" type="xml">
+            <form string="Contract commission reconciliation">
+                <group col="4">
+                    <field name="date_from"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Generate PDF" type="object" class="oe_highlight"/>
+                    or
+                    <button name="print_report_xls" string="Generate Xls" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_contract_commission_reconciliation" model="ir.actions.act_window">
+            <field name="name">Commission Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.contract.commission.reconciliation</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+      <menuitem name="Commission Report"
+            action="action_wizard_contract_commission_reconciliation"
+            id="menu_contract_commission_reconciliation"
+            string="Commission Report"
+            parent="base.menu_reporting_dashboard" sequence="5" invisible="1"/>
+
+    </data>
+</odoo>

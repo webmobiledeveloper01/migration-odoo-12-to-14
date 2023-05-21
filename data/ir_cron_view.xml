@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+
+		<record id="ir_res_contract_sale_confirm_scheduler_action" model="ir.cron">
+			<field name="name">Sale Confirm Scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+			<field name="model_id" ref="model_res_contract"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field eval="False" name="doall"/>
+			<!--<field name="state">code</field>-->
+			<!--<field name="code">model.cron_docusign_alerts()</field>-->
+            <field name="model">res.contract</field>
+            <field name="state">code</field>
+            <field name="code"> model.send_mail_sales_confirmation_letter_sent()</field>
+			<field name="numbercall">-1</field>
+		</record>
+
+        <record id="ir_res_contract_welcome_letter_scheduler_action" model="ir.cron">
+            <field name="name">Welcome Letter Scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="model">res.contract</field>
+            <field name="state">code</field>
+            <field name="code">model.send_mail_welcome_letter_automation_sent()</field>
+            <field eval="'()'" name="args"/>
+            <field eval="False" name="active" />
+        </record>
+
+<!--        <record id="udcore_signed_doc_download" model="ir.cron">-->
+<!--			<field name="name">UDcore Download Signed Document</field>-->
+<!--            <field name="user_id" ref="base.user_root"/>-->
+<!--			<field name="model_id" ref="model_udicore_docusign_cron"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">days</field>-->
+<!--            <field eval="False" name="doall"/>-->
+			<!--<field name="state">code</field>-->
+			<!--<field name="code">model.cron_docusign_alerts()</field>-->
+<!--            <field name="model">udicore.docusign.cron</field>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code"> model._signed_document_cron()</field>-->
+<!--			<field name="numbercall">-1</field>-->
+<!--		</record>-->
+
+
+    </data>
+</odoo>

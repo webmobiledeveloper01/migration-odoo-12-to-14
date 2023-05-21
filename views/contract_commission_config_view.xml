@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="contract_commission_confi_form_view" model="ir.ui.view">
+            <field name="name">Contract Commission Confi Form</field>
+            <field name="model">contract.commission.confi</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Contract Commission">
+                    <sheet>
+                        <group cols="4">
+                            <field name="year_duration" />
+                            <field name="percentage" />
+                             <field name="external_broker"/>
+                            <field name="supplier_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_commission_confi_tree_view" model="ir.ui.view">
+            <field name="name">Contract Commission Confi Tree</field>
+            <field name="model">contract.commission.confi</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Commission">
+                    <field name="year_duration" />
+                    <field name="percentage" />
+                    <field name="external_broker"/>
+                    <field name="supplier_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_contract_commission_confi" model="ir.actions.act_window">
+            <field name="name">Contract Commission</field>
+            <field name="res_model">contract.commission.confi</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="contract_commission_confi_menu" name="Contract Commission" action="action_contract_commission_confi"
+                  parent="configuration_main" sequence="190"/>
+
+        <record id="contract_commission_reconcile_form_view" model="ir.ui.view">
+            <field name="name">Contract Commission Reconcile Form</field>
+            <field name="model">contract.commission.reconcile</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Contract Commission Reconcile">
+                    <sheet>
+                        <group cols="4">
+                            <field name="create_datetime" invisible="1"/>
+                            <field name="dummy_create_datetime_commission" invisible="1"/>
+                            <field name="create_datetime_commission"/>
+                            <field name="dummy_user_id" invisible="1" />
+                            <field name="user_id" />
+                            <field name="receipt_date" />
+                            <field name="receipt_reference" />
+                            <field name="com_amount" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_commission_reconcile_tree_view" model="ir.ui.view">
+            <field name="name">Contract Commission Reconcile Tree</field>
+            <field name="model">contract.commission.reconcile</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Commission Reconcile">
+                    <field name="create_datetime" invisible="1"/>
+                    <field name="dummy_create_datetime_commission" invisible="1"/>
+                    <field name="create_datetime_commission"/>
+                    <field name="dummy_user_id" invisible="1" />
+                    <field name="user_id" />
+                    <field name="receipt_date" />
+                    <field name="receipt_reference" />
+                    <field name="com_amount" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_contract_commission_reconcile" model="ir.actions.act_window">
+            <field name="name">Contract Commission Reconcile</field>
+            <field name="res_model">contract.commission.reconcile</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="contract_commission_reconcile_menu" name="Contract Commission reconcile" action="action_contract_commission_reconcile"
+                  parent="configuration_main" sequence="200"/>
+
+        <record id="supplier_commission_confi_form_view" model="ir.ui.view">
+            <field name="name">Supplier Commission Confi Form</field>
+            <field name="model">supplier.commission.confi</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Supplier Commission">
+                    <sheet>
+                        <group cols="4">
+                            <field name="year_duration" />
+                            <field name="percentage" />
+                            <field name="supplier_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="supplier_commission_confi_tree_view" model="ir.ui.view">
+            <field name="name">Supplier Commission Confi Tree</field>
+            <field name="model">supplier.commission.confi</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Supplier Commission">
+                    <field name="year_duration" />
+                    <field name="percentage" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_supplier_commission_confi" model="ir.actions.act_window">
+            <field name="name">Supplier Commission Confi</field>
+            <field name="res_model">supplier.commission.confi</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="supplier_commission_confi_menu" name="Supplier Commission Confi" action="action_supplier_commission_confi"
+                  parent="configuration_main" sequence="200"/>
+
+    </data>
+</odoo>

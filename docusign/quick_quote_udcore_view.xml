@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+
+        <record id="quick_quote_udcore_form" model="ir.ui.view">
+            <field name="name">quick.quote.udcore.form</field>
+            <field name="model">quick.quote.udcore</field>
+            <field name="arch" type="xml">
+                <form string="Quick Quote Form">
+                    <header>
+                        <button name="get_supplier_rates" string="Get Rates" type="object" class="oe_highlight"/>
+                        <!--<button name="open_mail_wiz_quote_tool" type="object" string="Open Mail Wizard"/>-->
+                    </header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="contract_start_date" required="1"/>
+                            <field name="is_contract_renewal"/>
+                            <field name="current_supplier_id" widget="selection"/>
+                            <field name="day_consumption" widget="integer"/>
+                            <field name="utility_type" required="1" placeholder="Select Utility Type" widget="radio"/>
+                            <field name="payment_method" required="1" placeholder="Select Payment Method" widget="radio"/>
+                            <field name="uplift_value" />
+                            <field name="smart_meter_rate_selec" widget="radio"/>
+                            <field name="mpan_code" />
+                            <field name="post_code" attrs="{'invisible':[('utility_type','=','ele')]}"/>
+                            <field name="smart_meter_rate" invisible="1"/>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="quick_quote_tool_ids" nolabel="1">
+                                <tree string="Pricing Tool" editable="top">
+                                    <field name="compare_price"/>
+                                    <field name="supplier" readonly="1"/>
+                                    <field name="duration_term" readonly="1"/>
+                                    <field name="plan_type"/>
+                                    <field name="uplift_value" readonly="0" />
+                                    <field name="standing_charge" readonly="1" />
+                                    <field name="primary_rate" readonly="1" />
+                                    <field name="secondary_rate" readonly="1" />
+                                    <field name="tertiary_rate" readonly="1" />
+                                    <field name="fit_rate" readonly="1" />
+                                    <field name="annual_price_inclusive" readonly="1"/>
+                                    <field name="extra_info" readonly="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_quick_quote_udcore_wizard" model="ir.actions.act_window">
+            <field name="name">Quick Quote UDcore</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quick.quote.udcore</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_quick_quote_udcore_wizard" id="menu_quick_quote_udcore" parent="menu_sale_main"
+            sequence="4" name="Quick Quote"/>
+
+    </data>
+</odoo>

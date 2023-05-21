@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="docusign_config_form" model="ir.ui.view">
+            <field name="name">Docusign Configuration</field>
+            <field name="model">docusign.config</field>
+            <field name="arch" type="xml">
+                <form string="Docusign Config">
+                    <header>
+                        <button name="test_docusign_connection" type="object" string="Test and Confirmed"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group string="Security and Authentication">
+                            <field name="url"/>
+                            <field name="docusign_user"/>
+                            <field name="docusign_pass" password="True"/>
+                            <field name="docusign_key"/>
+                        </group>
+                        <group string="BaseUrl">
+                            <field name="docusign_baseurl"/>
+                            <field name="docusign_acc_no"/>
+                            <!-- <field name="docusign_authstr" /> -->
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!--groups="base.group_user"/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                    <!--<sheet>-->
+                    <!--<group>-->
+                    <!--<field name="licence_code"/>-->
+                    <!--<field name="mascarade_user"/>-->
+                    <!--</group>-->
+                    <!--</sheet>-->
+                </form>
+            </field>
+        </record>
+
+        <record id="docusign_config_tree" model="ir.ui.view">
+            <field name="name">Docusign Configuration</field>
+            <field name="model">docusign.config</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Docusign Config">
+                    <field name="name"/>
+                    <field name="docusign_user"/>
+                    <field name="docusign_baseurl"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_document_config" model="ir.actions.act_window">
+            <field name="name">Docusign Config</field>
+            <field name="res_model">docusign.config</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+        </record>
+
+        <menuitem id="menu_docusign_config" name="DocuSign" parent="menu_contract_main" sequence="3"/> <!--crm.crm_menu_root-->
+        <menuitem id="docusign_config_main" name="DocuSign Config" action="action_document_config"
+                  parent="menu_docusign_config" sequence="1"/> <!--menu_docusign_config -->
+
+    </data>
+
+
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="res_users_form_inherited">
+            <field name="name">res.users.form.inherited</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+                <field name="partner_id" position="before">
+                     <field name="on_sales_wallboard"/> <!-- groups="dernetz.group_contract_sys_admin" /> -->
+                     <field name="on_admin_wallboard"/> <!-- groups="dernetz.group_contract_sys_admin" /> -->
+                	 <field name="cleanser"/>
+                </field>
+                <xpath expr="//page[@name='access_rights']" position="after">
+                    <page string="Search">
+                        <field name="total_search_line_ids">
+                            <form>
+                                <group>
+                                    <field name="date" />
+                                    <field name="search_user" />
+                                </group>
+                            </form>
+                            <tree editable="bottom">
+                                <field name="date" />
+                                <field name="search_user" sum="Total" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <field name="action_id" position="after">
+                    <field name="default_section_id"/>
+                    <field name="dup_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_users_tree_view">
+            <field name="name">res.users.tree.view</field>
+            <field name="model">res.users</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="tree_string">
+                    <field name="name" />
+                    <field name="company_id" />
+                    <field name="default_section_id" />
+                </tree>
+            </field>
+        </record>
+
+<!--        <record id="res_users_search_view" model="ir.ui.view">-->
+<!--            <field name="name">res.users.search.view</field>-->
+<!--            <field name="model">res.users</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Search">-->
+<!--                    <group string="Group By...">-->
+<!--                        <filter string="Companies" domain="[]"-->
+<!--                            context="{'group_by':'company_id'}" />-->
+<!--                        <filter string="Default Sales Team" domain="[]"-->
+<!--                            context="{'group_by':'default_section_id'}" />-->
+<!--                    </group>-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record model="ir.actions.act_window" id="action_res_users">
+            <field name="name">Utilities Search</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.users</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="res_users_tree_view" />
+<!--            <field name="search_view_id" ref="res_users_search_view" />-->
+        </record>
+
+        <menuitem id="res_users_menu" parent="menu_sale_main"
+            action="action_res_users" />
+
+    </data>
+</odoo>

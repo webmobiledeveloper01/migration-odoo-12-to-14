@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="udicore_api_form_view" model="ir.ui.view">
+            <field name="name">Udicore Api Form</field>
+            <field name="model">udicore.api.menu</field>
+            <field name="arch" type="xml">
+                <form string="Udicore">
+                    <sheet>
+                        <group>
+                            <field name="licence_code"/>
+                            <field name="mascarade_user"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="udicore_api_tree_view" model="ir.ui.view">
+            <field name="name">Udicore Api Tree</field>
+            <field name="model">udicore.api.menu</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Udicore">
+                    <field name="licence_code" />
+                    <field name="mascarade_user" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="udicore_action_view_action" model="ir.actions.act_window">
+            <field name="name">Udicore Api</field>
+            <field name="res_model">udicore.api.menu</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="udicore_api_main" name="UdiCore Api" action="udicore_action_view_action"
+                  parent="configuration_main" sequence="220"/>
+    </data>
+</odoo>

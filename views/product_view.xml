@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_sub_verification" name="Verifications"
+                  parent="configuration_main" sequence="0"/>
+
+        <record model="ir.ui.view" id="view_product_form_expiry">
+            <field name="name">product.normal.form.uplift</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Uplift">
+                        <separator string="Uplift" colspan="4"/>
+                        <field name="uplift_line" nolabel="1" colspan="4">
+                            <form string="Uplift">
+                                <field name="name"/>
+                                <field name="uplift_value"/>
+                                <field name="profile_id"/>
+                            </form>
+                            <tree string="Uplift">
+                                <field name="name"/>
+                                <field name="uplift_value"/>
+                                <field name="profile_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Profile &amp; Region">
+                        <group>
+                            <group>
+                                <field name="via_verbal"/>
+                                <field name="via_written"/>
+                                <field name="via_electronic"/>
+                            </group>
+                            <group>
+                                <field name="verbal_text_id"
+                                       attrs="{'invisible': [('via_verbal','!=',True)],'required': [('via_verbal','!=',False)]}"/>
+                                <field name="written_template_id"
+                                       attrs="{'invisible': [('via_written','!=',True)],'required': [('via_written','!=',False)]}"/>
+                                <field name="electronic_template_id"
+                                       attrs="{'invisible': [('via_electronic','!=',True)],'required': [('via_electronic','!=',False)]}"/>
+                            </group>
+                        </group>
+                        <separator string="Profile &amp; Region" colspan="4"/>
+                        <field name="res_profile_region_line" nolabel="1" colspan="4">
+                            <form string="Region Profile">
+                                <field name="profile_id"/>
+                                <field name="region_id"/>
+                                <!--<field name="mtc_code" />-->
+                                <field name="llf_code"/>
+                                <field name="amount"/>
+                                <field name="primary_rate"/>
+                                <field name="secondary_rate"/>
+                                <field name="tertiary_rate"/>
+                            </form>
+                            <tree string="Region Profile" editable="top">
+                                <field name="profile_id"/>
+                                <field name="region_id"/>
+                                <!--<field name="mtc_code" />-->
+                                <field name="llf_code"/>
+                                <field name="amount"/>
+                                <field name="primary_rate"/>
+                                <field name="secondary_rate"/>
+                                <field name="tertiary_rate"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="view_category_verification_form" model="ir.ui.view">
+            <field name="name">product.category.verification.form</field>
+            <field name="model">product.category</field>
+            <field name="priority">50</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='first']" position="after">
+                    <newline/>
+                    <group>
+                        <field name="loa_lead_time"/>
+                        <field name="utility_type"/>
+                        <field name="option"/>
+                        <field name="call_back_period"/>
+                        <field name="start"/>
+                        <field name="mid"/>
+                        <field name="end"/>
+                        <field name="alert_line">
+                            <tree string="Add Alert" editable="top">
+                                <field name="name"/>
+                                <field name="sequence"/>
+                                <field name="alert_color"/>
+                                <!-- <field name="next_call"/> -->
+                            </tree>
+                        </field>
+                        <field name="verification_req"/>
+                        <field name="verification_logic" attrs="{'required': [('verification_req','=',True)]}"
+                               colspan="4"/>
+                        <field name="via_verbal"/>
+                        <field name="via_written"/>
+                        <field name="via_electronic"/>
+                        <field name="edit_internal_commission"/>
+                        <field name="edit_broker_commission"/>
+                        <field name="verbal_text_id"/>
+                        <field name="written_template_id"/>
+                        <field name="electronic_template_id"/>
+                        <field name="product_supplier_line" colspan="4" nolabel="1"/>
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record id="product_pricelist_view_supplier_ut_tree" model="ir.ui.view">-->
+        <!--<field name="name">product.pricelist.form.supplier.ur.tree</field>-->
+        <!--<field name="model">product.pricelist</field>-->
+        <!--<field name="inherit_id" ref="product.product_pricelist_view_tree" />-->
+        <!--<field name="arch" type="xml">-->
+        <!--<xpath expr="//field[@name='currency_id']" position="after">-->
+        <!--<field name="active_pricelist" string="Active Pricelist" />-->
+        <!--</xpath>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <record id="product_pricelist_view_supplier_ur" model="ir.ui.view">
+            <field name="name">product.pricelist.form.supplier.ur</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <!--replaced item_ids in product pricelist-->
+                <xpath expr="//field[@name='item_ids']" position="replace">
+                    <group string="Profile Region Line" attrs="{'invisible':[('utility_type','!=','ele')]}">
+                        <field name="res_profile_region_supplier_line" domain="[('supplier','=', True)]"
+                               nolabel="1"/>
+                    </group>
+                    <group string="Gas Region Line" attrs="{'invisible':[('utility_type','!=','gas')]}">
+                        <field name="res_gas_region_supplier_line" domain="[('supplier','=', True)]"
+                               nolabel="1">
+                            <tree string="Gas Region" editable="bottom">
+                                <field name="region_id"/>
+                                <field name="product_id"/>
+                                <field name="amount"/>
+                                <field name="primary_rate"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+                <!--<xpath expr="//field[@name='type']" position="attributes">-->
+                <!--<attribute name="invisible">True</attribute>-->
+                <!--</xpath>-->
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='active']" position="before">
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="utility_type"/>
+                    <field name="contract_type_id"/>
+                    <field name="duration"/>
+                    <field name="partner_id" invisible="1"/>
+                    <!--<field name="active_pricelist" invisible="1" />-->
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Master data verble, written, electronic -->
+        <record model="ir.ui.view" id="verbal_text_tree_view">
+            <field name="name">verbal.text.tree</field>
+            <field name="model">verbal.text</field>
+            <field name="arch" type="xml">
+                <tree string="Verbal">
+                    <field name="code"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="verbal_text_form_view">
+            <field name="name">verbal.text.form</field>
+            <field name="model">verbal.text</field>
+            <field name="arch" type="xml">
+                <form string="Verbal">
+                    <sheet>
+                        <group>
+                            <field name="name" select="1" placeholder="Name" class="oe_inline"
+                                   required="1" widget="html"/>
+                        </group>
+                        <group>
+                            <field name="code" select="1" placeholder="Code"/>
+                            <field name="description" placeholder="Description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_verbal_text_tree_view">
+            <field name="name">Verbal</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">verbal.text</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="verbal_text_tree_view"/>
+        </record>
+
+        <menuitem id="verbal_text_menu" name="Verbal Templete"
+                  parent="menu_sub_verification" action="action_verbal_text_tree_view"/>
+
+        <record model="ir.ui.view" id="written_template_tree_view">
+            <field name="name">written.template.tree</field>
+            <field name="model">written.template</field>
+            <field name="arch" type="xml">
+                <tree string="Written">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="written_template_form_view">
+            <field name="name">written.template.form</field>
+            <field name="model">written.template</field>
+            <field name="arch" type="xml">
+                <form string="Written">
+                    <sheet>
+                        <group>
+                            <field name="name" select="1" placeholder="Name" class="oe_inline"
+                                   required="1" widget="html"/>
+                        </group>
+                        <group>
+                            <field name="code" select="1" placeholder="Code"/>
+                            <field name="description" placeholder="Description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_written_template_tree_view">
+            <field name="name">Written</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">written.template</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="written_template_tree_view"/>
+        </record>
+
+        <menuitem id="written_template_menu" name="Written Templete"
+                  parent="menu_sub_verification" action="action_written_template_tree_view"/>
+
+        <record model="ir.ui.view" id="electronic_tree_view">
+            <field name="name">electronic.template.tree</field>
+            <field name="model">electronic.template</field>
+            <field name="arch" type="xml">
+                <tree string="Electronic">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="electronic_form_view">
+            <field name="name">electronic.template.form</field>
+            <field name="model">electronic.template</field>
+            <field name="arch" type="xml">
+                <form string="Electronic">
+                    <sheet>
+                        <group>
+                            <field name="name" select="1" placeholder="Name" class="oe_inline"
+                                   widget="html"/>
+                        </group>
+                        <group>
+                            <field name="code" select="1" placeholder="Code"/>
+                            <field name="description" placeholder="Description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_electronic_tree_view">
+            <field name="name">Electronic</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">electronic.template</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="electronic_tree_view"/>
+        </record>
+        <menuitem id="electronic_menu" name="Electronic Templete"
+                  parent="menu_sub_verification" action="action_electronic_tree_view"/>
+
+        <!--<record model="ir.actions.act_window" id="action_email_template_tree_all_ur">-->
+            <!--<field name="name">Templates</field>-->
+            <!--<field name="res_model">mail.template</field>-->
+            <!--<!-- <field name="view_type">form</field> -->-->
+            <!--<field name="view_mode">form,tree</field>-->
+            <!--<field name="view_id" ref="mail_template.email_template_tree"/>-->
+            <!--<field name="domain">[('model', '=', 'res.contract')]</field>-->
+            <!--<field name="search_view_id" ref="mail_template.view_email_template_search"/>-->
+        <!--</record>-->
+
+        <!--<menuitem id="menu_email_templates_ur" parent="menu_sub_verification"-->
+                  <!--action="action_email_template_tree_all_ur" sequence="20"/>-->
+
+    </data>
+</odoo>

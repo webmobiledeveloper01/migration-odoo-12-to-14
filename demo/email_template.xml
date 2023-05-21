@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--Price Comparision Template Quote Button-->
+        <!--<record id="price_comparision_email_template" model="mail.template">-->
+            <!--<field name="name">Price Comparison Letter</field>-->
+            <!--<field name="email_from"> </field>-->
+            <!--<field name="email_to">${object.meter_data_id.contract_id.partner_id.email}</field>-->
+            <!--<field name="subject">Price Comparison Email</field>-->
+            <!--<field name="email_recipients">${object.meter_data_id.contract_id.partner_id.email}</field>-->
+            <!--<field name="model_id" ref="model_meter_quote_pricing_wiz"/>-->
+            <!--<field name="report_template" ref="dernetz.price_comparision_report"/>-->
+            <!--<field name="report_name">${'Price Comparison' or ''}</field>-->
+            <!--<field name="auto_delete" eval="False"/>-->
+            <!--<field name="lang">${object.meter_data_id.contract_id.partner_id.lang}</field>-->
+            <!--<field name="body_html"><![CDATA[-->
+            	<!--<p> Dear ${object.meter_data_id.contract_id.des_partner_id.name},<br/>-->
+            	    <!--Below attached File has the PDF for price comparison you can have a look over it.-->
+                    <!--&lt;!&ndash;${ctx['email_content'] | safe}&ndash;&gt;-->
+                    <!--<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF;">-->
+                        <!--<table border="2" cellspacing="2" cellpadding="2" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">-->
+                            <!--<tr bgcolor="#CCCCCC">-->
+                                <!--% if ctx['supplier_view_selec'] != 'none':-->
+                                    <!--<td>Supplier</td>-->
+                                <!--% endif-->
+                                <!--<td>Term</td>-->
+                                <!--&lt;!&ndash; <td>PlanType</td> &ndash;&gt;-->
+                                <!--<td>UpliftValue</td>-->
+                                <!--<td>StandingCharge</td>-->
+                                <!--<td>PrimaryRate</td>-->
+                                <!--<td>SecondaryRate</td>-->
+                                <!--<td>Eve/WERate</td>-->
+                                <!--<td>FITRate</td>-->
+                                <!--<td>AnnualPriceInclusiveCCL</td>-->
+                                <!--<td>QuarterlyCharge/SmartsMeter</td>-->
+                            <!--</tr>-->
+                            <!--% for line in ctx['lines']:-->
+                            <!--<tr>-->
+                                <!--% if ctx['supplier_view_selec'] != 'none':-->
+                                    <!--<td align="center" style="border:1px solid #CCC;">-->
+                                        <!--% if ctx['supplier_view_selec'] == 'img':-->
+                                            <!--<img src="data:image/png;base64,${line[12]}" style="max-height:45px;"/>-->
+                                        <!--% endif-->
+                                        <!--% if ctx['supplier_view_selec'] == 'ref':-->
+                                            <!--${line[11]}-->
+                                        <!--% endif-->
+                                        <!--% if ctx['supplier_view_selec'] == 'both':-->
+                                            <!--<img src="data:image/png;base64,${line[12]}"/><br/>${line[11]}-->
+                                        <!--% endif-->
+                                    <!--</td>-->
+                                <!--% endif-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[0]}</td>-->
+                                <!--&lt;!&ndash; <td align="right" style="border:1px solid #CCC;">${line[1]}</td> &ndash;&gt;-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[2]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[3]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[4]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[5]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[6]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[7]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[8]}</td>-->
+                                <!--<td align="right" style="border:1px solid #CCC;">${line[9]}</td>-->
+                            <!--</tr>-->
+                            <!--% endfor-->
+                        <!--</table>-->
+				    <!--</div>-->
+            	<!--</p>-->
+             <!--]]></field>-->
+         <!--</record>-->
+
+
+        <!--Price Comparision Template-->
+<!--         <record id="email_template_price_comparision" model="mail.template">
+            <field name="name">Price Comparision Letter</field>
+            <field name="email_from"></field>
+            <field name="email_to">${object.meter_data_id.contract_id.partner_id.email}</field>
+            <field name="subject">Price Comparision Email</field>
+            <field name="email_recipients">${object.meter_data_id.contract_id.partner_id.email}</field>
+            <field name="model_id" ref="dernetz.model_meter_quote_pricing_wiz"/>
+            <field name="report_template" ref="dernetz.price_comparision_report"/>
+            <field name="report_name">${'Price Comparision' or ''}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.meter_data_id.contract_id.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+            	<p> Dear ${object.meter_data_id.contract_id.des_partner_id.name},<br/>
+                    Below attached File has the PDF for price comparison you can have a look over it.
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF;">
+                        <table border="2" cellspacing="2" cellpadding="2" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
+                            <tr bgcolor="#CCCCCC">
+                                % if ctx['supplier_view_selec'] != 'none':
+                                    <td>Supplier</td>
+                                % endif
+                                <td>Term</td>
+                                <td>UpliftValue</td>
+                                <td>StandingCharge</td>
+                                <td>PrimaryRate</td>
+                                <td>SecondaryRate</td>
+                                <td>Eve/WERate</td>
+                                <td>FITRate</td>
+                                <td>AnnualPriceInclusiveCCL</td>
+                                <td>QuaterlyCharge/SmartsMeter</td>
+                            </tr>
+                            % for line in ctx['lines']:
+                            <tr>
+                                % if ctx['supplier_view_selec'] != 'none':
+                                    <td align="center" style="border:1px solid #CCC;">
+                                        % if ctx['supplier_view_selec'] == 'img':
+                                            <img src="data:image/png;base64,${line[12]}" style="max-height:45px;"/>
+                                        % endif
+                                        % if ctx['supplier_view_selec'] == 'ref':
+                                            ${line[11]}
+                                        % endif
+                                        % if ctx['supplier_view_selec'] == 'both':
+                                            <img src="data:image/png;base64,${line[12]}"/><br/>${line[11]}
+                                        % endif
+                                    </td>
+                                % endif
+                                <td align="right" style="border:1px solid #CCC;">${line[0]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[2]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[3]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[4]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[5]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[6]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[7]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[8]}</td>
+                                <td align="right" style="border:1px solid #CCC;">${line[9]}</td>
+                            </tr>
+                            % endfor
+                        </table>
+                    </div>
+                </p>
+             ]]></field>
+         </record> -->
+
+
+    	<!--Email template -->
+        <record id="mail_template_loa_contract" model="mail.template">
+            <field name="name">LOA Contract</field>
+            <field name="email_from"></field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="subject">Confirmation Email</field>
+            <field name="email_recipients">${user.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="report_name">${'Confirmation Letter'}</field>
+<!--            <field name="report_template" ref="dernetz.sale_confirmation_letter_xls_id"/>-->
+            <field name="lang">${object.partner_id.lang}</field>
+<!--            <field name="report_template" ref="report_loa_crm_contract"/>-->
+            <field name="body_html"><![CDATA[
+            	<p> Dear,
+                    ${ctx['email_content'] | safe}
+            	</p>
+             ]]></field>
+         </record>
+
+        <record id="email_template_sale_confirmation_contract" model="mail.template">
+            <field name="name">Sales Confirmation Letters</field>
+            <field name="email_from"></field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="subject">Confirmation Email</field>
+            <field name="email_recipients">${user.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="report_name">${object.contract_type_id.name == 'Renewal' and 'Confirmation Letter' or 'Confirmation Letter' } - ${object.get_current_datetime("%d-%m-%Y")}</field>
+<!--            <field name="report_template" ref="dernetz.sale_confirmation_letter_xls_id"/>-->
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+            	<p> Dear,
+                    ${ctx['email_content'] | safe}
+            	</p>
+             ]]></field>
+         </record>
+
+
+        <!-- Contract Welcome Letter -->
+        <record id="email_template_contract_welcome_letter" model="mail.template">
+            <field name="name">Contract Welcome Letter</field>
+            <field name="email_from"> </field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="subject">Welcome to dernetz</field>
+            <field name="email_recipients">${user.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+<!--            <field name="report_template" ref="dernetz.contract_welcome_letter"/>-->
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+                <p> Dear,
+                    ${ctx['email_content'] | safe}
+            	</p>
+            ]]></field>
+         </record>
+
+
+    	<!--Email template -->
+        <record id="email_template_contract_query" model="mail.template">
+            <field name="name">Contract Query</field>
+            <field name="email_from">${user.partner_id.name} ${user.partner_id.email}</field>
+            <field name="email_to">${object.user_id.email}</field>
+            <field name="subject">Contract - Query Alert</field>
+            <field name="email_recipients">${user.partner_id.id}</field>
+            <field name="model_id" ref="model_res_contract"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+             <p>Contract <strong><a href='http://'+${object.get_dynamic_ip()}+'/?db=ur_02&ts=1363776044343#id=${object.id}&view_type=form&model=res.contract&menu_id=252&action=300'>${object.name}</a></strong> is available for your attention.</p> <p>&nbsp;</p> <p>Regards,</p> ${object.user_id.name}</p>
+             ]]></field>
+         </record>
+
+    	
+    </data>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="gb_service_configuration_form_view" model="ir.ui.view">
+            <field name="name">Services Configuration Form</field>
+            <field name="model">services.configuration</field>
+            <field name="arch" type="xml">
+                <form string="GB Services form">
+                    <sheet>
+                        <group col="4">
+                            <field name="web_url" />
+                            <field name="client_service" />
+                            <field name="user_id" />
+                            <field name="password" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="gb_service_configuration_tree_view" model="ir.ui.view">
+            <field name="name">Services Configuration Tree</field>
+            <field name="model">services.configuration</field>
+            <field name="arch" type="xml">
+                <tree string="GB Services form">
+                    <field name="web_url" />
+                    <field name="client_service" />
+                    <field name="user_id" />
+                    <field name="password" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_gb_service_configuration" model="ir.actions.act_window">
+            <field name="name">GB Services Form</field>
+            <field name="res_model">services.configuration</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_web_service_form" name="Web Services" parent="configuration_main" sequence="4"/>
+        <menuitem id="menu_gb_service_form" name="GB Services form" action="action_gb_service_configuration"
+                  parent="menu_web_service_form" sequence="1"/>
+
+    </data>
+</odoo>

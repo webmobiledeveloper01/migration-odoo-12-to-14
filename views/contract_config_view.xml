@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="proof_of_usage_views_form" model="ir.ui.view">
+            <field name="name">Proof Of Usage View Form</field>
+            <field name="model">proof.of.usage</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="proof_of_usage_tree_view" model="ir.ui.view">
+            <field name="name">Proof Of Usage Tree View</field>
+            <field name="model">proof.of.usage</field>
+            <field name="arch" type="xml">
+                <tree string="Proof Of Usage">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="proof_of_usage_action_view" model="ir.actions.act_window">
+            <field name="name">Proof Of Usage</field>
+            <field name="res_model">proof.of.usage</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="configuration_main" name="Configuration" parent="menu_contract_main" sequence="20"/>
+        <menuitem id="proof_of_usage_main" name="Proof Of Usage" action="proof_of_usage_action_view"
+                  parent="configuration_main" sequence="10"/>
+
+        <record id="pricing_type_views_form" model="ir.ui.view">
+            <field name="name">Pricing Type View Form</field>
+            <field name="model">pricing.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="pricing_type_tree_view" model="ir.ui.view">
+            <field name="name">Pricing Type Tree View</field>
+            <field name="model">pricing.type</field>
+            <field name="arch" type="xml">
+                <tree string="Pricing Type">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="pricing_type_action_view" model="ir.actions.act_window">
+            <field name="name">Pricing Type</field>
+            <field name="res_model">pricing.type</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="pricing_type_main" name="Pricing Type" action="pricing_type_action_view"
+                  parent="configuration_main" sequence="20"/>
+
+        <record id="contract_account_views_form" model="ir.ui.view">
+            <field name="name">Contract Account View Form</field>
+            <field name="model">contract.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_account_tree_view" model="ir.ui.view">
+            <field name="name">Contract Account Tree View</field>
+            <field name="model">contract.account</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Account">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="contract_account_action_view" model="ir.actions.act_window">
+            <field name="name">Contract Account</field>
+            <field name="res_model">contract.account</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+
+        <menuitem id="contract_account_main" name="Contract Account" action="contract_account_action_view"
+                  parent="configuration_main" sequence="30"/>
+
+        <record id="contract_type_views_form" model="ir.ui.view">
+            <field name="name">Contract Type View Form</field>
+            <field name="model">contract.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_type_tree_view" model="ir.ui.view">
+            <field name="name">Contract Type Tree View</field>
+            <field name="model">contract.type</field>
+            <field name="arch" type="xml">
+                <tree string="Proof Of Usage">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="contract_type_action_view" model="ir.actions.act_window">
+            <field name="name">Contract Type</field>
+            <field name="res_model">contract.type</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+
+        <menuitem id="contract_type_main" name="Contract Type" action="contract_type_action_view"
+                  parent="configuration_main" sequence="40"/>
+
+
+        <record id="contract_subtype_views_form" model="ir.ui.view">
+            <field name="name">Contract Subtype View Form</field>
+            <field name="model">contract.subtype</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_subtype_tree_view" model="ir.ui.view">
+            <field name="name">Contract Subtype Tree View</field>
+            <field name="model">contract.subtype</field>
+            <field name="arch" type="xml">
+                <tree string="Proof Of Usage">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="contract_subtype_action_view" model="ir.actions.act_window">
+            <field name="name">Contract Subtype</field>
+            <field name="res_model">contract.subtype</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+
+        <menuitem id="Contract Subtype_main" name="Contract Subtype" action="contract_subtype_action_view"
+                  parent="configuration_main" sequence="50"/>
+
+        <record id="payment_type_views_form" model="ir.ui.view">
+            <field name="name">Payment Type View Form</field>
+            <field name="model">payment.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="requires_day"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="payment_type_tree_view" model="ir.ui.view">
+            <field name="name">Payment Type Tree View</field>
+            <field name="model">payment.type</field>
+            <field name="arch" type="xml">
+                <tree string="Proof Of Usage">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="requires_day"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="payment_type_action_view" model="ir.actions.act_window">
+            <field name="name">Payment Type</field>
+            <field name="res_model">payment.type</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+
+        <menuitem id="payment_type_main" name="Payment Type" action="payment_type_action_view"
+                  parent="configuration_main" sequence="60"/>
+
+        <record id="tariff_views_form" model="ir.ui.view">
+            <field name="name">Tariff View Form</field>
+            <field name="model">res.tariff</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tariff_tree_view" model="ir.ui.view">
+            <field name="name">Tariff Tree View</field>
+            <field name="model">res.tariff</field>
+            <field name="arch" type="xml">
+                <tree string="Tariff">
+                    <field name="name"/>
+                    <field name="note"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="tariff_action_view" model="ir.actions.act_window">
+            <field name="name">Tariff</field>
+            <field name="res_model">res.tariff</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="tariff_main" name="Tariff" action="tariff_action_view" parent="configuration_main" sequence="70"/>
+
+        <record id="uplift_views_form" model="ir.ui.view">
+            <field name="name">UpLift View Form</field>
+            <field name="model">res.uplift</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="uplift_value"/>
+                            <field name="product_id"/>
+                            <field name="profile_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="uplift_tree_view" model="ir.ui.view">
+            <field name="name">UpLift Tree View</field>
+            <field name="model">res.uplift</field>
+            <field name="arch" type="xml">
+                <tree string="Tariff">
+                    <field name="name"/>
+                    <field name="uplift_value"/>
+                    <field name="product_id"/>
+                    <field name="profile_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="uplift_action_view" model="ir.actions.act_window">
+            <field name="name">UpLift</field>
+            <field name="res_model">res.uplift</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="uplift_main" name="UpLift" action="uplift_action_view" parent="configuration_main" sequence="80"/>
+
+        <record id="region_views_form" model="ir.ui.view">
+            <field name="name">Region View Form</field>
+            <field name="model">res.region</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="6">
+                            <field name="name" select="1" placeholder="Name" class="oe_inline" required="1"/>
+                            <field name="code" select="1" placeholder="Code" class="oe_inline"/>
+                            <field name="short_name" select="1" placeholder="Short Name" class="oe_inline"/>
+                        </group>
+                        <notebook>
+                            <page string="Region Alias">
+                                <field name="region_alias_line">
+                                    <tree editable="top">
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="PostCode Line">
+                                <field name="postcode_line">
+                                    <tree editable="top">
+                                        <field name="zip"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="region_tree_view" model="ir.ui.view">
+            <field name="name">Region Tree View</field>
+            <field name="model">res.region</field>
+            <field name="arch" type="xml">
+                <tree string="Tariff">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="short_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="region_action_view" model="ir.actions.act_window">
+            <field name="name">Region</field>
+            <field name="res_model">res.region</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="region_main" name="Region" action="region_action_view" parent="configuration_main" sequence="90"/>
+
+        <record id="profile_views_form" model="ir.ui.view">
+            <field name="name">Profile View Form</field>
+            <field name="model">res.profile</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="6">
+                            <field name="name" select="1" placeholder="Name" class="oe_inline" required="1"/>
+                            <field name="code" select="1" placeholder="Code" class="oe_inline"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="profile_tree_view" model="ir.ui.view">
+            <field name="name">Profile Tree View</field>
+            <field name="model">res.profile</field>
+            <field name="arch" type="xml">
+                <tree string="Tariff">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="profile_action_view" model="ir.actions.act_window">
+            <field name="name">Profile</field>
+            <field name="res_model">res.profile</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="profile_main" name="Profile" action="profile_action_view" parent="configuration_main"
+                  sequence="100"/>
+
+        <record id="profile_region_views_form" model="ir.ui.view">
+            <field name="name">Profile Region View Form</field>
+            <field name="model">res.profile.region</field>
+            <field name="arch" type="xml">
+                <form string="Profile MTC Region">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="profile_id" select="1"/>
+                                <field name="region_id" select="1"/>
+                                <field name="product_id" string="Tariff" select="1"/>
+                            </group>
+                            <group>
+                                <field name="mtc_codes" select="1"/>
+                                <field name="llf_code"/>
+                                <field name="amount" select="1"/>
+                                <field name="primary_rate"/>
+                                <field name="secondary_rate"/>
+                                <field name="tertiary_rate"/>
+                                <field name="other_price_1"/>
+                                <field name="other_price_2"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="profile_region_tree_view" model="ir.ui.view">
+            <field name="name">Profile Region Tree View</field>
+            <field name="model">res.profile.region</field>
+            <field name="arch" type="xml">
+                <tree string="Profile MTC Region">
+                    <field name="profile_id"/>
+                    <field name="region_id"/>
+                    <field name="mtc_codes"/>
+                    <field name="llf_code"/>
+                    <field name="product_id" string="Tariff"/>
+                    <field name="amount"/>
+                    <field name="primary_rate"/>
+                    <field name="secondary_rate"/>
+                    <field name="tertiary_rate"/>
+                    <field name="other_price_1"/>
+                    <field name="other_price_2"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="profile_region_action_view" model="ir.actions.act_window">
+            <field name="name">Profile MTC Region</field>
+            <field name="res_model">res.profile.region</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="profile_region_main" name="Profile Region" action="profile_region_action_view"
+                  parent="configuration_main"
+                  sequence="110"/>
+
+        <record id="query_code_views_form" model="ir.ui.view">
+            <field name="name">Query Code View Form</field>
+            <field name="model">query.code</field>
+            <field name="arch" type="xml">
+                <form string="Query Code">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="category_id"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="query_code_tree_view" model="ir.ui.view">
+            <field name="name">Query Code Tree View</field>
+            <field name="model">query.code</field>
+            <field name="arch" type="xml">
+                <tree string="Query Code">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="query_code_action_view" model="ir.actions.act_window">
+            <field name="name">Query Code</field>
+            <field name="res_model">query.code</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="query_code_main" name="Query Code" action="query_code_action_view"
+                  parent="configuration_main"
+                  sequence="120"/>
+
+        <record id="query_category_views_form" model="ir.ui.view">
+            <field name="name">Query Category View Form</field>
+            <field name="model">query.category</field>
+            <field name="arch" type="xml">
+                <form string="Query Category">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="desc"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="query_category_tree_view" model="ir.ui.view">
+            <field name="name">Query Category Tree View</field>
+            <field name="model">query.category</field>
+            <field name="arch" type="xml">
+                <tree string="Query Category">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="desc"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="query_category_action_view" model="ir.actions.act_window">
+            <field name="name">Query Category</field>
+            <field name="res_model">query.category</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="query_category_main" name="Query Category" action="query_category_action_view"
+                  parent="configuration_main"
+                  sequence="130"/>
+
+
+        <record id="general_note_form_view_admin" model="ir.ui.view">
+            <field name="name">General Note Form Admin</field>
+            <field name="model">general.note</field>
+            <!--<field name="groups_id" eval="[(6, 0, [ref('group_contract_admin')])]" />-->
+            <field name="arch" type="xml">
+                <form string="General Note">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="query_code_id"/>
+                                <field name="log_date"/>
+                                <field name="order_id"/>
+                                <field name="sale_name"/>
+                                <field name="contract_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="create_partner_id" invisible="1"/>
+                                <field name="create_date_note" invisible="1"/>
+                            </group>
+                            <newline/>
+                            <group>
+                                <field name="name" select="1"/>
+                            </group>
+                            <field name="check" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="general_note_tree_view" model="ir.ui.view">
+            <field name="name">General Note Tree</field>
+            <field name="model">general.note</field>
+            <field name="arch" type="xml">
+                <tree string="General Note">
+                    <field name="log_date"/>
+                    <field name="query_code_id"/>
+                    <field name="name"/>
+                    <field name="sale_name"/>
+                    <field name="order_id" readonly="1"/>
+                    <field name="contract_id" readonly="1"/>
+                    <field name="partner_id" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="general_note_action_view" model="ir.actions.act_window">
+            <field name="name">General Note</field>
+            <field name="res_model">general.note</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="General_note_main" name="General Note" action="general_note_action_view"
+                  parent="configuration_main" sequence="140"/>
+
+        <record id="postcode_form_view_admin" model="ir.ui.view">
+            <field name="name">Postcode Form</field>
+            <field name="model">res.postcode</field>
+            <!--<field name="groups_id" eval="[(6, 0, [ref('group_contract_admin')])]" />-->
+            <field name="arch" type="xml">
+                <form string="Postcode">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="zip"/>
+                                <field name="region_id"/>
+                            </group>
+                            <group>
+                                <field name="supplier_id"/>
+                                <field name="sub_region_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="postcode_tree_view" model="ir.ui.view">
+            <field name="name">Postcode Tree</field>
+            <field name="model">res.postcode</field>
+            <field name="arch" type="xml">
+                <tree string="Postcode">
+                    <field name="zip"/>
+                    <field name="region_id"/>
+                    <field name="supplier_id"/>
+                    <field name="sub_region_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="postcode_action_view" model="ir.actions.act_window">
+            <field name="name">Postcode</field>
+            <field name="res_model">res.postcode</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="postcode_main" name="Postcode" action="postcode_action_view"
+                  parent="configuration_main" sequence="150"/>
+
+
+        <record id="res_gas_region_form_view" model="ir.ui.view">
+            <field name="name">Gas Region Configuration Form</field>
+            <field name="model">res.profile.region.gas</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Gas Region">
+                    <sheet>
+                        <group>
+                            <field name="region_id" select="1"/>
+                            <field name="product_id" select="1"/>
+                            <field name="amount" select="1"/>
+                            <field name="primary_rate"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_gas_region_tree_view" model="ir.ui.view">
+            <field name="name">Gas Region Configuration Tree</field>
+            <field name="model">res.profile.region.gas</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Gas Region">
+                    <field name="region_id"/>
+                    <field name="product_id"/>
+                    <field name="amount"/>
+                    <field name="primary_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_gas_region_action_view" model="ir.actions.act_window">
+            <field name="name">Gas Region</field>
+            <field name="res_model">res.profile.region.gas</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="res_gas_region_main" name="Gas Region" action="res_gas_region_action_view"
+                  parent="configuration_main" sequence="160"/>
+
+        <record id="res_sub_region_form_view" model="ir.ui.view">
+            <field name="name">Res Sub Region Form</field>
+            <field name="model">res.sub.region</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Sub Region(EXZ)">
+                    <sheet>
+                        <group>
+                            <field name="name" select="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_sub_region_tree_view" model="ir.ui.view">
+            <field name="name">Res Sub Region Tree</field>
+            <field name="model">res.sub.region</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Sub Region(EXZ)">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_sub_region_action_view" model="ir.actions.act_window">
+            <field name="name">Res Sub Region</field>
+            <field name="res_model">res.sub.region</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="res_sub_region_main" name="Sub Region(EXZ)" action="res_gas_region_action_view"
+                  parent="configuration_main" sequence="170"/>
+
+        <record id="uplift_name_form_view" model="ir.ui.view">
+            <field name="name">Uplift Name Reporting Form</field>
+            <field name="model">uplift.name.reporting</field>
+            <field name="arch" type="xml">
+                <form string="Uplift/Name Mapping">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="uplift_value"/>
+                            <field name="supplier_id"/>
+                            <field name="utility_type"/>
+                        </group>
+                        <group>
+                            <field name="res_profile_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="uplift_name_tree_view" model="ir.ui.view">
+            <field name="name">Uplift Name Tree</field>
+            <field name="model">uplift.name.reporting</field>
+            <field name="arch" type="xml">
+                <tree string="Uplift/Name Mapping">
+                    <field name="name"/>
+                    <field name="uplift_value"/>
+                    <field name="supplier_id"/>
+                    <field name="utility_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="uplift_name_action_view" model="ir.actions.act_window">
+            <field name="name">Uplift/Name Mapping</field>
+            <field name="res_model">uplift.name.reporting</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,search</field>
+
+        </record>
+
+        <menuitem id="uplift_name_main" name="Uplift/Name Mapping" action="uplift_name_action_view"
+                  parent="configuration_main" sequence="180"/>
+
+
+
+    </data>
+</odoo>

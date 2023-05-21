@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Contract DashBoard FOR ADMIN -->
+
+
+        <record id="action_res_contract_my_contract_tree_view_admin" model="ir.actions.act_window">
+            <field name="name">All Contracts</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="domain">[('renew_id','=',False)]</field> -->
+            <field name="view_id" ref="contract_tree_view"/>
+        </record>
+
+        <menuitem id="contract_dashboard_main" name="Contract Dashboard - Admin Agents"
+                  parent="menu_contract_main" sequence="4"/>
+        <menuitem id="contract_dashboard_menu" name="All Contract" action="action_res_contract_my_contract_tree_view_admin"
+                  parent="contract_dashboard_main" sequence="10"/>
+
+
+         <record id="action_res_contract_all_any_que_tree_view" model="ir.actions.act_window">
+            <field name="name">All Contracts In All Queries</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('renew_id','=',False),('state','in',('admin_query','query'))]</field>
+            <field name="view_id" ref="contract_tree_view" />
+        </record>
+
+        <menuitem id="menu_contract_all_que_cont" name="All Contracts In All Queries" action="action_res_contract_all_any_que_tree_view"
+                  parent="contract_dashboard_main" sequence="20"/>
+
+        <record id="action_res_contract_my_cont_que_tree_view" model="ir.actions.act_window">
+            <field name="name">All Contracts In Sales Queries</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','query')]</field>
+            <field name="view_id" ref="contract_tree_view" />
+        </record>
+
+        <menuitem id="menu_contract_my_cont_que" name="All Contracts In Sales Queries" action="action_res_contract_my_cont_que_tree_view"
+                  parent="contract_dashboard_main" sequence="30"/>
+
+        <record id="action_res_contract_all_admin_que_tree_view" model="ir.actions.act_window" >
+            <field name="name">All Contracts In Admin Queries</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','admin_query')]</field>
+            <field name="view_id" ref="contract_tree_view" />
+        </record>
+
+        <menuitem id="menu_contract_all_admin_que_cont" name="All Contracts In Admin Queries" action="action_res_contract_all_admin_que_tree_view"
+                  parent="contract_dashboard_main" sequence="40"/>
+
+
+        <record model="ir.ui.view" id="res_contract_high_priority_tree_view_admin">
+            <field name="name">Res High Contract Tree Admin</field>
+            <field name="model">res.contract</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract">
+                    <field name="name" />
+                    <field name="confirmation_date" />
+                    <field name="end_date" />
+                    <field name="days_to_expiry" />
+                    <field name="utility_type" />
+                    <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="admin_user_id" />
+                    <field name="admin_pro_user_id" />
+                    <field name="supplier_id" />
+                    <field name="presale_termination_issued" string="PsTI" />
+                    <field name="state" />
+                    <field name="broker_commission"/>
+                    <!--<field name="rec_color" invisible="1" />-->
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_res_contract_my_high_tree_view" model="ir.actions.act_window" >
+            <field name="name">All High Priority Contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree</field>
+            <!--<field name="domain">[('renew_id','=',False),('call_back_list','=','h'),('superseded', '=', False)]</field>-->
+            <field name="view_id" ref="res_contract_high_priority_tree_view_admin" />
+        </record>
+
+        <menuitem id="menu_contract_my_high_prio_cont" name="All High Priority Contracts"
+                  action="action_res_contract_my_high_tree_view"
+                  parent="contract_dashboard_main" sequence="50"/>
+
+
+        <record id="res_contract_low_priority_tree_view_admin" model="ir.ui.view">
+            <field name="name">res.low.contract.tree.admin</field>
+            <field name="model">res.contract</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract">
+                    <field name="name" />
+                    <field name="confirmation_date" />
+                    <field name="end_date" />
+                    <field name="days_to_expiry" />
+                    <field name="utility_type" />
+                    <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="admin_user_id" />
+                    <field name="admin_pro_user_id" />
+                    <field name="supplier_id" />
+                    <field name="presale_termination_issued" string="PsTI" />
+                    <field name="state" />
+                    <field name="broker_commission"/>
+                    <!--<field name="rec_color" invisible="1" />-->
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_res_contract_my_low_tree_view" model="ir.actions.act_window">
+            <field name="name">All Low Priority Contracts</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <!--<field name="domain">[('renew_id','=',False),('call_back_list','=','l'),('superseded', '=', False)]</field>-->
+            <field name="view_id" ref="res_contract_low_priority_tree_view_admin" />
+        </record>
+
+        <menuitem id="menu_contract_my_low_prio_cont" name="All Low Priority Contracts"
+                  action="action_res_contract_my_low_tree_view" parent="contract_dashboard_main" sequence="60"/>
+
+        <record id="res_contract_exp_tree_view_admin" model="ir.ui.view">
+            <field name="name">Res Exp Contract Tree Admin</field>
+            <field name="model">res.contract</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract">
+                    <field name="name" />
+                    <field name="confirmation_date" />
+                    <field name="end_date" />
+                    <field name="days_to_expiry" />
+                    <field name="utility_type" />
+                    <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="admin_user_id" />
+                    <field name="admin_pro_user_id" />
+                    <field name="supplier_id" />
+                    <field name="presale_termination_issued" string="PsTI" />
+                    <field name="state" />
+                    <field name="broker_commission"/>
+                    <!--<field name="rec_color" invisible="1" />-->
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_res_contract_expired_tree_view" model="ir.actions.act_window">
+            <field name="name">All Expired Contracts</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <!--<field name="domain">[('renew_id','=',False),('call_back_list','=','ex')]</field>-->
+            <field name="view_id" ref="res_contract_exp_tree_view_admin" />
+        </record>
+
+        <menuitem id="menu_contract_expired_cont" name="All Expired Contracts"
+                  action="action_res_contract_expired_tree_view" parent="contract_dashboard_main" sequence="70"/>
+
+         <record id="action_res_contract_all_status_agree_tree_view" model="ir.actions.act_window">
+            <field name="name">All Contracts In Sale Agreed</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','sale_agreed')]</field>
+            <field name="view_id" ref="contract_tree_view" />
+        </record>
+
+        <menuitem id="menu_contract_all_sale_agree_cont" name="All Contracts In Sale Agreed"
+                  action="action_res_contract_all_status_agree_tree_view" parent="contract_dashboard_main" sequence="80"/>
+
+        <record id="action_res_contract_cot_set_tree_view" model="ir.actions.act_window">
+            <field name="name">All Contracts With COT Set</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('renew_id','=',False),('cot_date','!=',False)]</field>
+            <field name="view_id" ref="contract_tree_view" />
+        </record>
+
+        <menuitem id="menu_contract_all_cot_set_cont" name="All Contracts With COT Set"
+                  action="action_res_contract_cot_set_tree_view" parent="contract_dashboard_main" sequence="90"/>
+
+        <record id="res_contract_tree_view_loa_expiry_admin" model="ir.ui.view">
+            <field name="name">res.contract.tree.loa.expiry.admin</field>
+            <field name="model">res.contract</field>
+            <field name="arch" type="xml">
+                <tree string="LOA Expiry Contract">
+                    <field name="name" />
+                    <field name="confirmation_date" />
+                    <field name="end_date" />
+                    <field name="days_to_expiry" />
+                    <field name="days_to_loa_expiry" />
+                    <field name="utility_type" />
+                    <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="admin_user_id" />
+                    <field name="admin_pro_user_id" />
+                    <field name="supplier_id" />
+                    <field name="presale_termination_issued" string="PsTI" />
+                    <field name="state" />
+                    <field name="broker_commission"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_res_contract_loa_expiry_tree_view" model="ir.actions.act_window">
+            <field name="name">All Contracts With LOA Expiry</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'loa_lead_time_menu_click': True}</field>
+            <!--<field name="domain">[]</field>-->
+            <field name="view_id" ref="res_contract_tree_view_loa_expiry_admin" />
+        </record>
+
+        <menuitem id="menu_contract_all_loa_expiry_set_cont" name="All Contracts With LOA Expiry"
+                  action="action_res_contract_loa_expiry_tree_view" parent="contract_dashboard_main" sequence="100"/>
+
+        <!-- Contract commission Report -->
+        <record id="res_contract_tree_view_contract_commission" model="ir.ui.view">
+            <field name="name">res.contract.tree.contract.commission</field>
+            <field name="model">res.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Commission">
+                    <field name="commission_date" />
+                    <field name="year_duration" />
+                    <field name="name" />
+                    <field name="calculate_broker_commission" sum="Total Commission" />
+                    <field name="contract_type_id" />
+                    <field name="uplift_value" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_contract_commission_tree_view" model="ir.actions.act_window">
+            <field name="name">All contract Commissions</field>
+            <field name="res_model">res.contract</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <!--<field name="context">{}</field>-->
+            <!--<field name="domain">[]</field>-->
+            <field name="view_id" ref="res_contract_tree_view_contract_commission" />
+        </record>
+
+        <menuitem id="menu_contract_all_contract_commission" name="My Contracts With Commission"
+                  action="action_contract_commission_tree_view" parent="contract_dashboard_main" sequence="110"/>
+    </data>
+</odoo>

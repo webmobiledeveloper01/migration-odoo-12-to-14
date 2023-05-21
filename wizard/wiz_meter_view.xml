@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- create a view with a unique id -->
+        <record id="view_wiz_mpnn_search_form" model="ir.ui.view">
+            <field name="name">view.wiz.mpnn.search.form</field>
+            <field name="model">wiz.mpnn.search</field>
+            <field name="arch" type="xml">
+            <!-- create a normal form view, with the fields you've created on your python file -->
+                <form string="Insert reformulation info">
+                    <group>
+                        <group>
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="zip"/>
+                            <field name="town"/>
+                        </group>
+                        <group>
+                            <field name="county"/>
+                            <field name="country"/>
+                            <field name="mpan_num"/>
+                            <field name="mpr_num"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                        <button name="get_mpnn_using_wizard" string="Find Meters" class="oe_highlight" type="object" />
+                    <!--<field name="mpnn_search_line" widget="one2many_line" readonly="1"/>-->
+                    <field name="mpnn_find_line" widget="one2many_line" readonly="1"/>
+                    <footer>
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+        <!-- your action window refers to the view_id you've just created -->
+        <record id="action_wiz_mpnn_search" model="ir.actions.act_window">
+            <field name="name">Get MPNN</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wiz.mpnn.search</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_wiz_mpnn_search_form"/>
+            <field name="target">new</field> 
+        </record>
+
+        <act_window id="action_wiz_mpnn_search"
+                name="Get MPNN"
+                res_model="wiz.mpnn.search"
+                src_model="res.partner"
+                view_mode="form"
+                target="new"
+                key2="client_action_multi"
+        />
+
+        <record model="ir.ui.view" id="wiz_mpnn_find_line_tree_view">
+           <field name="name">wiz.mpnn.find.line.tree.view</field>
+           <field name="model">wiz.mpnn.find.line</field>
+           <field name="type">tree</field>
+           <field name="arch" type="xml">
+               <tree string="tree_string">
+                    <!-- <button name="create_record" icon="STOCK_FLOPPY" type="object"></button> -->
+                    <button name="open_detailed_record" icon="fa-address-card" type="object"/>
+                    <field name="line1" readonly="1"/>
+                    <field name="line2" readonly="1"/>
+               </tree>
+           </field>
+        </record>
+
+       <record model="ir.ui.view" id="wiz_mpnn_search_line_form_view">
+            <field name="name">wiz.mpnn.search.line.form</field>
+            <field name="model">wiz.mpnn.search.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form_string">
+                    <header>
+                        <button name="create_record" type="object" icon="fa-handshake-o" string="ADD Details"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="fore" readonly="1"/>
+                            <field name="dept" readonly="1"/>
+                            <field name="bnum" readonly="1"/>
+                            <field name="subb" readonly="1"/>
+                            <field name="thor" readonly="1"/>
+                            <field name="cnty" readonly="1"/>
+                            <field name="pobx" readonly="1"/>
+                            <field name="pcod" readonly="1"/>
+                            <field name="fuel" readonly="1"/>
+                            <field name="ctmp" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="surn" readonly="1"/>
+                            <field name="orgn" readonly="1"/>
+                            <field name="bnam" readonly="1"/>
+                            <field name="town" readonly="1"/>
+                            <field name="ppco" readonly="1"/>
+                            <field name="tpco" readonly="1"/>
+                            <field name="lguf" readonly="1"/>
+                            <field name="ctmn" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Meter Reference Electric">
+                        <field name="wiz_electric_line" widget="one2many_list" nolabel="1" readonly="1"/>
+                    </group>
+                    <group string="Meter Reference Gas">
+                        <field name="wiz_gas_line" widget="one2many_list" nolabel="1" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+       </record>
+
+       <record model="ir.ui.view" id="wiz_mpnn_search_line_tree_view">
+           <field name="name">wiz.mpnn.search.line.tree.view</field>
+           <field name="model">wiz.mpnn.search.line</field>
+           <field name="type">tree</field>
+           <field name="arch" type="xml">
+               <tree string="tree_string">
+                    <button name="create_record" icon="fa-save" type="object"/>
+                    <field name="fore" readonly="1"/>
+                    <field name="surn" readonly="1"/>
+                    <field name="dept" readonly="1"/>
+                    <field name="orgn" readonly="1"/>
+                    <field name="pobx" readonly="1"/>
+                    <field name="subb" readonly="1"/>
+                    <field name="bnam" readonly="1"/>
+                    <field name="bnum" readonly="1"/>
+                    <field name="thor" readonly="1"/>
+                    <field name="town" readonly="1"/>
+                    <field name="cnty" readonly="1"/>
+                    <field name="pcod" readonly="1"/>
+                    <field name="ppco" readonly="1"/>
+                    <field name="tpco" readonly="1"/>
+                    <field name="fuel" readonly="1"/>
+                    <field name="lguf" readonly="1"/>
+                    <field name="ctmp" readonly="1"/>
+                    <field name="ctmn" readonly="1"/>
+               </tree>
+           </field>
+        </record>
+
+       <!-- Electric Reference Tree View -->
+
+        <record model="ir.ui.view" id="wiz_electric_reference_tree_view">
+            <field name="name">wiz.electric.reference.tree</field>
+            <field name="model">wiz.electric.reference</field>
+            <field name="arch" type="xml">
+                <tree string="tree_string" editable="bottom">
+                    <field name="mp_value"/>
+                    <field name="sm_value"/>
+                    <field name="mt_value"/>
+                    <field name="tl_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="wiz_electric_reference_form_view">
+            <field name="name">wiz.electric.reference.form</field>
+            <field name="model">wiz.electric.reference</field>
+            <field name="arch" type="xml">
+                <form string="form_string">
+                    <group>
+                        <group>
+                            <field name="mp_value"/>
+                        </group>
+                        <group>
+                            <field name="sm_value"/>
+                        </group>
+                        <group>
+                            <field name="mt_value"/>
+                        </group>
+                        <group>
+                            <field name="tl_value"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+
+       <!-- Gas Reference Tree View -->
+        <record model="ir.ui.view" id="wiz_gas_reference_tree_view">
+            <field name="name">wiz.gas.reference.tree</field>
+            <field name="model">wiz.gas.reference</field>
+            <field name="arch" type="xml">
+                <tree string="tree_string" editable="bottom">
+                    <field name="mn_value"/>
+                    <field name="ms_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Gas Reference Form View -->
+        <record model="ir.ui.view" id="wiz_gas_reference_form_view">
+            <field name="name">wiz.gas.reference.form</field>
+            <field name="model">wiz.gas.reference</field>
+            <field name="arch" type="xml">
+                <form string="form_string">
+                    <group>
+                        <group>
+                            <field name="mn_value"/>
+                        </group>
+                        <group>
+                            <field name="ms_value"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

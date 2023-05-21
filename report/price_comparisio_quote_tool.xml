@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!--Header Template -->
+
+        <template id="report_price_comparision_quick_quote_header_external_layout_header">
+            <div class="header">
+                <div class="row">
+                    <div class="col-xs-12" align="right">
+                        <img src="dernetz/static/src/img/Logo.png"
+                             style="height:117px;width=117px"/>
+                    </div>
+                </div>
+                <div class="row" align="right">
+                    <img src="dernetz/static/src/img/Address.png" style="height:50px;width=50px"/>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+        </template>
+
+        <!--Footer Template-->
+
+        <template id="report_price_comparision__quick_quote_footer_external_layout_header">
+            <div class="footer">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img src="dernetz/static/src/img/OtherInfo.png" height="29px"
+                             width="100%"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img src="dernetz/static/src/img/Facebook.png" height="28px"
+                             width="60%"/>
+                    </div>
+                    <div class="col-xs-4">
+                        <img src="dernetz/static/src/img/Twitter.png" height="28px"
+                             width="60%"/>
+                    </div>
+                    <div class="col-xs-4">
+                        <img src="dernetz/static/src/img/LinkedIn.png" height="28px"
+                             width="60%"/>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+
+        <!--Report Template ID external layout -->
+
+        <template id="report_price_comparision_quick_quote_external_layout">
+            <!--Price cmparision-->
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc"/>
+            </t>
+            <t t-if="o and 'company_id' in o">
+
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <t t-call="dernetz.report_price_comparision_quick_quote_header_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="dernetz.report_price_comparision__quick_quote_footer_external_layout_header"/>
+        </template>
+
+
+        <template id="report_price_comparision_quick_quote_pdfreport_document">
+            <t t-call="report.html_container">
+                <t t-call="dernetz.report_price_comparision_quick_quote_external_layout">
+                    <div class="page">
+                        <div class="row mt8"
+                             style="margin-top:220px;color:#566D7E;font-size:24px;border-bottom:1px solid black;">
+                        </div>
+                        <div class="row" style="color:#566D7E;font-size:18px;" align="center">
+                            <b>
+                                MPAN/MPR :-
+                                <span t-if="o.mpan_code" t-field="o.mpan_code"/>
+                                <span t-if="not o.mpan_code">&amp;nbsp;</span>
+                            </b>
+                        </div>
+
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <table class="table table-hover table-condensed">
+                                <thead style="background-color:#6698FF;font-size:15px;text-align:center;">
+                                    <tr>
+                                        <!--<td style="padding:20px;">Supplier Ref</td>-->
+                                        <td style="padding:20px;">Term</td>
+                                        <td style="padding:20px;">PlanType</td>
+                                        <!--<td style="padding:20px;">UpliftValue</td>-->
+                                        <td style="padding:20px;">Standing<br/>Charge
+                                        </td>
+                                        <td style="padding:20px;">PrimaryRate</td>
+                                        <td style="padding:20px;">SecondaryRate</td>
+                                        <td style="padding:20px;">Eve/WERate</td>
+                                        <td style="padding:20px;">FITRate</td>
+                                        <td style="padding:20px;">AnnualPrice<br/>InclusiveCCL
+                                        </td>
+                                        <td style="padding:20px;">QuaterlyCharge/<br/>SmartsMeter
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size:15px;color:blue;">
+                                    <t t-foreach="o.quick_quote_tool_ids" t-as="price">
+                                        <t t-if="price.compare_price">
+                                            <tr style="text-align: center;">
+                                                <!--<td style="padding:20px;">-->
+                                                    <!--<span t-esc="price.supplier_ref"/>-->
+                                                <!--</td>-->
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.duration_term"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.plan_type"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.standing_charge"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.primary_rate"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.secondary_rate"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.tertiary_rate"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.fit_rate"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.annual_price_inclusive"/>
+                                                </td>
+                                                <td style="padding:20px;">
+                                                    <span t-esc="price.extra_info"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="report_price_comparision_quick_quote">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dernetz.report_price_comparision_quick_quote_pdfreport_document"/>
+            </t>
+        </template>
+
+</odoo>
